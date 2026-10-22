@@ -381,6 +381,7 @@
       <div class="toolbar">
         <label class="chip"><input type="checkbox" id="opt-fix" checked> Corrections</label>
         <label class="chip"><input type="checkbox" id="opt-hands" checked> Hands-free</label>
+        <label class="chip"><input type="checkbox" id="opt-auto"> Auto-send</label>
         <label class="chip"><input type="checkbox" id="opt-voice" checked> Voice</label>
         <label class="chip">Speed
           <select id="opt-rate">
@@ -397,6 +398,7 @@
       <div class="log" id="log" aria-live="polite"></div>
 
       <div class="live" id="live"></div>
+      <div style="text-align:center;margin-bottom:6px"><button class="link-btn hidden" id="btn-discard">✕ Discard what I said</button></div>
       <div class="hint-box hidden" id="hint-box"></div>
 
       <div class="controls">
@@ -468,7 +470,12 @@
       seconds: 0,
       timer: null,
       recognition: null,
-      voice: null
+      voice: null,
+      draft: '',
+      interim: '',
+      wantListening: false,
+      sendOnEnd: false,
+      autoTimer: null
     };
 
     const $ = id => document.getElementById(id);
@@ -493,6 +500,7 @@
       $('btn-test').addEventListener('click', testConnection);
       $('btn-start').addEventListener('click', startSession);
       $('btn-mic').addEventListener('click', onMicTap);
+      $('btn-discard').addEventListener('click', () => finishListening(false));
       $('btn-send').addEventListener('click', sendTyped);
       $('btn-hint').addEventListener('click', showHint);
       $('btn-finish').addEventListener('click', finishSession);
@@ -537,39 +545,72 @@
 
     /* ---------- Ligação ao Apps Script ---------- */
 
+    function wait(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
     async function api(action, payload) {
       if (!cfg.url || !cfg.token) {
         throw new Error('Configura primeiro o URL e o token (botão ⚙).');
       }
 
-      let response;
+      // Só repete pedidos que não gravam nada na folha
+      const retryable = ['ping', 'voiceTurn', 'voiceHint'].indexOf(action) !== -1;
+      const attempts = retryable ? 2 : 1;
+      let lastError = null;
 
-      try {
-        // Sem cabeçalhos personalizados: pedido simples, sem preflight CORS
-        response = await fetch(cfg.url, {
-          method: 'POST',
-          body: JSON.stringify(Object.assign({ action, token: cfg.token }, payload || {}))
-        });
-      } catch (error) {
-        throw new Error(
-          'Não consegui contactar a app. Confirma o URL e se a implementação ' +
-          'está com acesso "Qualquer pessoa".'
-        );
+      for (let attempt = 1; attempt <= attempts; attempt++) {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), 40000);
+
+        try {
+          // Sem cabeçalhos personalizados: pedido simples, sem preflight CORS
+          const response = await fetch(cfg.url, {
+            method: 'POST',
+            body: JSON.stringify(Object.assign({ action, token: cfg.token }, payload || {})),
+            signal: controller.signal
+          });
+
+          const raw = await response.text();
+          let data = null;
+
+          try {
+            data = JSON.parse(raw);
+          } catch (parseError) {
+            const snippet = raw.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 160);
+            lastError = new Error(
+              'Resposta inesperada da app' + (snippet ? ': “' + snippet + '”' : '') +
+              '. Se se repetir, confirma o URL /exec e a versão da implementação.'
+            );
+          }
+
+          if (data) {
+            if (!data.ok) {
+              // Erro "a sério" do servidor (token, limite da IA...): não repetir
+              throw Object.assign(new Error(data.error || 'Erro desconhecido.'), { final: true });
+            }
+
+            return data;
+          }
+        } catch (error) {
+          if (error && error.final) throw error;
+
+          if (error && error.name === 'AbortError') {
+            lastError = new Error('A resposta demorou demasiado (mais de 40 segundos).');
+          } else {
+            lastError = new Error(
+              'Não consegui contactar a app. Confirma o URL e se a implementação ' +
+              'está com acesso "Qualquer pessoa".'
+            );
+          }
+        } finally {
+          clearTimeout(timer);
+        }
+
+        if (attempt < attempts) await wait(1500);
       }
 
-      let data;
-
-      try {
-        data = await response.json();
-      } catch (error) {
-        throw new Error(
-          'Resposta inesperada da app. Confirma se o URL termina em /exec e ' +
-          'se criaste uma nova versão da implementação.'
-        );
-      }
-
-      if (!data.ok) throw new Error(data.error || 'Erro desconhecido.');
-      return data;
+      throw lastError;
     }
 
     function readSettingsFields() {
@@ -761,8 +802,13 @@
     }
 
     function sendUser(text) {
-      const clean = String(text || '').trim();
+      let clean = String(text || '').trim();
       if (!clean || state.busy) return;
+
+      if (clean.length > 600) {
+        clean = clean.slice(0, 600);
+        toast('Long answer: only the first 600 characters were sent.');
+      }
 
       const wrap = addBubble('user', clean);
       aiTurn(clean, false, wrap);
@@ -793,11 +839,12 @@
       const label = $('mic-label');
 
       mic.classList.remove('listening', 'busy');
+      $('btn-discard').classList.toggle('hidden', !state.wantListening);
 
-      if (state.listening) {
+      if (state.wantListening) {
         mic.classList.add('listening');
-        mic.textContent = '■';
-        label.textContent = 'Listening... tap when you finish';
+        mic.textContent = '➤';
+        label.textContent = 'Listening... take your time, tap ➤ to send';
       } else if (state.busy) {
         mic.classList.add('busy');
         mic.textContent = '…';
@@ -811,14 +858,34 @@
       }
     }
 
+    function collectDraft() {
+      return (state.draft + (state.interim ? ' ' + state.interim : '')).trim();
+    }
+
+    function updateLive() {
+      $('live').textContent = collectDraft();
+    }
+
+    function resetListening() {
+      clearTimeout(state.autoTimer);
+      state.draft = '';
+      state.interim = '';
+      state.wantListening = false;
+      state.sendOnEnd = false;
+      state.recognition = null;
+      updateLive();
+      updateMic();
+    }
+
     function onMicTap() {
       if (!SR) {
         toast('This browser has no speech recognition. Please type your answer.');
         return;
       }
 
-      if (state.listening) {
-        state.recognition && state.recognition.stop();
+      // Enquanto ouve, tocar no botão ENVIA o que disseste
+      if (state.wantListening) {
+        finishListening(true);
         return;
       }
 
@@ -833,75 +900,156 @@
     }
 
     function startListening() {
-      if (!SR || state.listening || state.busy || state.speaking) return;
+      if (!SR || state.wantListening || state.busy || state.speaking) return;
 
+      state.draft = '';
+      state.interim = '';
+      state.sendOnEnd = false;
+      state.wantListening = true;
+
+      updateLive();
+      updateMic();
+      beginRecognition();
+    }
+
+    function scheduleAutoSend() {
+      clearTimeout(state.autoTimer);
+      if (!$('opt-auto').checked) return;
+
+      state.autoTimer = setTimeout(() => {
+        if (state.wantListening && collectDraft()) finishListening(true);
+      }, 3500);
+    }
+
+    function beginRecognition() {
       const recognition = new SR();
-      let finalText = '';
 
       recognition.lang = 'en-GB';
       recognition.interimResults = true;
-      recognition.continuous = false;
+      recognition.continuous = true;
       recognition.maxAlternatives = 1;
 
       recognition.onresult = event => {
+        if (state.recognition !== recognition) return;
+
         let interim = '';
 
         for (let i = event.resultIndex; i < event.results.length; i++) {
           const result = event.results[i];
+          const text = result[0].transcript.trim();
 
-          if (result.isFinal) finalText += result[0].transcript;
-          else interim += result[0].transcript;
+          if (!text) continue;
+
+          if (result.isFinal) {
+            // Evita repetições que alguns browsers de telemóvel produzem
+            if (!state.draft.endsWith(text)) {
+              state.draft = (state.draft ? state.draft + ' ' : '') + text;
+            }
+          } else {
+            interim += (interim ? ' ' : '') + text;
+          }
         }
 
-        $('live').textContent = (finalText + interim).trim();
+        state.interim = interim;
+        updateLive();
+        scheduleAutoSend();
       };
 
       recognition.onerror = event => {
+        if (state.recognition !== recognition) return;
+
         const messages = {
           'not-allowed': 'Microphone blocked. Allow the microphone for this site in your browser settings.',
           'service-not-allowed': 'Microphone blocked. Allow the microphone for this site in your browser settings.',
           'audio-capture': 'No microphone found.',
-          'no-speech': 'I did not hear anything. Tap the microphone and try again.',
           'network': 'Speech recognition needs an internet connection.'
         };
 
-        if (event.error !== 'aborted') {
-          toast(messages[event.error] || 'Speech recognition error: ' + event.error);
+        // "no-speech" e "aborted" são normais: continua a ouvir
+        if (messages[event.error]) {
+          toast(messages[event.error]);
+          state.wantListening = false;
+          state.sendOnEnd = false;
+          state.draft = '';
+          state.interim = '';
         }
       };
 
       recognition.onend = () => {
-        state.listening = false;
-        state.recognition = null;
-        updateMic();
+        if (state.recognition !== recognition) return;
 
-        const text = finalText.trim();
-        $('live').textContent = '';
+        if (state.sendOnEnd) {
+          completeListening();
+          return;
+        }
 
-        if (text) sendUser(text);
+        // O browser termina sozinho depois de silêncio: volta a ouvir
+        if (state.wantListening) {
+          state.recognition = null;
+
+          setTimeout(() => {
+            if (state.wantListening && !state.recognition) beginRecognition();
+          }, 250);
+          return;
+        }
+
+        resetListening();
       };
 
       try {
         state.recognition = recognition;
-        state.listening = true;
         recognition.start();
-        updateMic();
       } catch (error) {
-        state.listening = false;
         state.recognition = null;
+        state.wantListening = false;
         updateMic();
       }
     }
 
-    function stopListening() {
-      if (state.recognition) {
-        try { state.recognition.abort(); } catch (e) { /* ignore */ }
+    function completeListening() {
+      const send = state.sendOnEnd;
+      const text = collectDraft();
+
+      resetListening();
+
+      if (send && text) sendUser(text);
+    }
+
+    // send = true envia o que foi dito; false descarta
+    function finishListening(send) {
+      clearTimeout(state.autoTimer);
+
+      if (!send) {
+        stopListening();
+        return;
       }
 
-      state.listening = false;
-      state.recognition = null;
-      $('live').textContent = '';
+      state.wantListening = false;
+      state.sendOnEnd = true;
       updateMic();
+
+      if (state.recognition) {
+        try { state.recognition.stop(); } catch (error) { /* ignore */ }
+
+        // Segurança: se o browser nunca terminar, envia na mesma
+        setTimeout(() => {
+          if (state.sendOnEnd) completeListening();
+        }, 2500);
+      } else {
+        completeListening();
+      }
+    }
+
+    // Para de ouvir e descarta o que foi dito
+    function stopListening() {
+      clearTimeout(state.autoTimer);
+
+      const recognition = state.recognition;
+      resetListening();
+
+      if (recognition) {
+        try { recognition.abort(); } catch (error) { /* ignore */ }
+      }
     }
 
     /* ---------- Voz do assistente ---------- */
