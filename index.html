@@ -242,6 +242,10 @@
     .fix strong { color: var(--text); }
     .log.hide-fix .fix { display: none; }
 
+    .fix { border-left: 4px solid var(--amber); font-size: 14px; }
+    .fix-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+    button.chip { cursor: pointer; font: inherit; font-size: 12px; font-weight: 600; }
+
     .typing .bubble { color: var(--muted); letter-spacing: 2px; }
 
     .live {
@@ -382,6 +386,8 @@
         <label class="chip"><input type="checkbox" id="opt-fix" checked> Corrections</label>
         <label class="chip"><input type="checkbox" id="opt-hands" checked> Hands-free</label>
         <label class="chip"><input type="checkbox" id="opt-auto"> Auto-send</label>
+        <label class="chip"><input type="checkbox" id="opt-pause" checked> Pause on fixes</label>
+        <button type="button" class="chip" id="btn-fixes">📝 Fixes <span id="fix-count">0</span></button>
         <label class="chip"><input type="checkbox" id="opt-voice" checked> Voice</label>
         <label class="chip">Speed
           <select id="opt-rate">
@@ -395,6 +401,7 @@
 
       <p class="scenario-title" id="scenario-title"></p>
 
+      <div class="card hidden" id="fix-panel" style="margin-bottom:10px;max-height:260px;overflow:auto;padding:14px"></div>
       <div class="log" id="log" aria-live="polite"></div>
 
       <div class="live" id="live"></div>
@@ -475,7 +482,10 @@
       interim: '',
       wantListening: false,
       sendOnEnd: false,
-      autoTimer: null
+      autoTimer: null,
+      sessionId: 0,
+      continueResolve: null,
+      fixes: []
     };
 
     const $ = id => document.getElementById(id);
@@ -501,6 +511,10 @@
       $('btn-start').addEventListener('click', startSession);
       $('btn-mic').addEventListener('click', onMicTap);
       $('btn-discard').addEventListener('click', () => finishListening(false));
+      $('btn-fixes').addEventListener('click', () => {
+        renderFixPanel();
+        $('fix-panel').classList.toggle('hidden');
+      });
       $('btn-send').addEventListener('click', sendTyped);
       $('btn-hint').addEventListener('click', showHint);
       $('btn-finish').addEventListener('click', finishSession);
@@ -671,6 +685,12 @@
       state.scenario = currentScenarioBrief();
       state.history = [];
       state.seconds = 0;
+      state.sessionId++;
+      releaseContinue(true);
+      setBusy(false);
+      state.fixes = [];
+      updateFixCount();
+      $('fix-panel').classList.add('hidden');
 
       $('log').innerHTML = '';
       $('live').textContent = '';
@@ -730,7 +750,7 @@
       return wrap;
     }
 
-    function addFix(wrap, correction) {
+    function addFix(wrap, correction, withContinue) {
       const fix = document.createElement('div');
       fix.className = 'fix';
 
@@ -745,8 +765,92 @@
         fix.appendChild(note);
       }
 
+      const actions = document.createElement('div');
+      actions.className = 'fix-actions';
+
+      const listen = document.createElement('button');
+      listen.className = 'btn secondary small';
+      listen.textContent = '🔊 Listen';
+      listen.addEventListener('click', () => speak(correction.better));
+      actions.appendChild(listen);
+
+      if (withContinue) {
+        const go = document.createElement('button');
+        go.className = 'btn small';
+        go.textContent = 'Continue ▶';
+        go.addEventListener('click', () => releaseContinue(false));
+        actions.appendChild(go);
+      }
+
+      fix.appendChild(actions);
       wrap.appendChild(fix);
       scrollLog();
+    }
+
+    /* Pausa para ler a correção antes de a IA falar */
+    function waitForContinue() {
+      return new Promise(resolve => {
+        state.continueResolve = resolve;
+        updateMic();
+      });
+    }
+
+    function releaseContinue(skip) {
+      if (!state.continueResolve) return;
+
+      const resolve = state.continueResolve;
+      state.continueResolve = null;
+
+      document.querySelectorAll('.fix-actions .btn:not(.secondary)').forEach(button => button.remove());
+
+      updateMic();
+      resolve(!!skip);
+    }
+
+    function updateFixCount() {
+      $('fix-count').textContent = String(state.fixes.length);
+    }
+
+    function buildFixItem(item) {
+      const box = document.createElement('div');
+      box.className = 'mistake';
+
+      const said = document.createElement('span');
+      said.className = 'from';
+      said.textContent = item.said;
+
+      const better = document.createElement('span');
+      better.className = 'to';
+      better.textContent = item.better;
+
+      const listen = document.createElement('button');
+      listen.className = 'link-btn';
+      listen.textContent = '🔊';
+      listen.setAttribute('aria-label', 'Listen');
+      listen.addEventListener('click', () => speak(item.better));
+
+      box.append(said, document.createTextNode(' → '), better, document.createTextNode(' '), listen);
+
+      if (item.note) {
+        const why = document.createElement('span');
+        why.className = 'why';
+        why.textContent = item.note;
+        box.appendChild(why);
+      }
+
+      return box;
+    }
+
+    function renderFixPanel() {
+      const panel = $('fix-panel');
+      panel.innerHTML = '';
+
+      if (!state.fixes.length) {
+        panel.textContent = 'No corrections yet. They will be listed here as you speak.';
+        return;
+      }
+
+      state.fixes.slice().reverse().forEach(item => panel.appendChild(buildFixItem(item)));
     }
 
     function addTyping() {
@@ -766,6 +870,8 @@
     /* ---------- Turnos ---------- */
 
     async function aiTurn(userText, start, userWrap) {
+      const session = state.sessionId;
+
       setBusy(true);
       $('hint-box').classList.add('hidden');
 
@@ -781,9 +887,26 @@
 
         typing.remove();
 
+        // A sessão terminou ou recomeçou entretanto: ignora esta resposta
+        if (session !== state.sessionId) return;
+
+        let pause = false;
+
         if (!start) {
           state.history.push({ role: 'user', text: userText });
-          if (data.correction && userWrap) addFix(userWrap, data.correction);
+
+          if (data.correction) {
+            state.fixes.push({
+              said: userText,
+              better: data.correction.better,
+              note: data.correction.note
+            });
+            updateFixCount();
+
+            pause = $('opt-fix').checked && $('opt-pause').checked;
+
+            if (userWrap) addFix(userWrap, data.correction, pause);
+          }
         }
 
         state.history.push({ role: 'ai', text: data.reply });
@@ -791,11 +914,22 @@
 
         setBusy(false);
 
+        // Mostra a resposta por escrito e espera que leias a correção
+        if (pause) {
+          const skipped = await waitForContinue();
+          if (skipped || session !== state.sessionId) return;
+        }
+
         await speak(data.reply);
+
+        if (session !== state.sessionId) return;
 
         if ($('opt-hands').checked && SR && !state.busy) startListening();
       } catch (error) {
         typing.remove();
+
+        if (session !== state.sessionId) return;
+
         setBusy(false);
         addBubble('ai', '⚠ ' + error.message);
       }
@@ -809,6 +943,9 @@
         clean = clean.slice(0, 600);
         toast('Long answer: only the first 600 characters were sent.');
       }
+
+      // Se estavas a ler uma correção, avança sem a IA falar a resposta anterior
+      releaseContinue(true);
 
       const wrap = addBubble('user', clean);
       aiTurn(clean, false, wrap);
@@ -845,6 +982,9 @@
         mic.classList.add('listening');
         mic.textContent = '➤';
         label.textContent = 'Listening... take your time, tap ➤ to send';
+      } else if (state.continueResolve) {
+        mic.textContent = '▶';
+        label.textContent = 'Read your correction, then tap ▶ to continue';
       } else if (state.busy) {
         mic.classList.add('busy');
         mic.textContent = '…';
@@ -889,6 +1029,11 @@
         return;
       }
 
+      if (state.continueResolve) {
+        releaseContinue(false);
+        return;
+      }
+
       if (state.speaking) {
         stopSpeaking();
         return;
@@ -900,7 +1045,7 @@
     }
 
     function startListening() {
-      if (!SR || state.wantListening || state.busy || state.speaking) return;
+      if (!SR || state.wantListening || state.busy || state.speaking || state.continueResolve) return;
 
       state.draft = '';
       state.interim = '';
@@ -1169,6 +1314,8 @@
     async function finishSession() {
       stopListening();
       stopSpeaking();
+      state.sessionId++;
+      releaseContinue(true);
       clearInterval(state.timer);
 
       const userTurns = state.history.filter(h => h.role === 'user').length;
@@ -1229,6 +1376,11 @@
       text.textContent = data.summary + ' (' + formatTime(state.seconds) + ')';
 
       summary.append(title, score, text);
+
+      if (state.fixes.length) {
+        summary.appendChild(sectionLabel('Corrections from this conversation'));
+        state.fixes.forEach(item => summary.appendChild(buildFixItem(item)));
+      }
 
       if (data.mistakes && data.mistakes.length) {
         summary.appendChild(sectionLabel('What to improve'));
