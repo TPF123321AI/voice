@@ -876,13 +876,147 @@
     @media (max-width: 560px) {
       .welcome { padding: 20px 18px; border-radius: 20px; }
     }
+
+    /* ---------- Quote, voice hero, grammar ---------- */
+    .quote-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 16px;
+      padding: 16px 20px;
+      background: linear-gradient(135deg, var(--hero-from), var(--hero-to));
+      border: 1px solid var(--hero-border);
+      border-radius: 20px;
+    }
+
+    .quote-banner .eyebrow { margin: 0 0 4px; }
+    .quote-text { margin: 0; font-size: clamp(17px, 2.6vw, 21px); font-weight: 700; letter-spacing: -.3px; line-height: 1.35; }
+
+    .voice-hero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+      padding: 24px 26px;
+      border-radius: 22px;
+      color: #fff;
+      background: linear-gradient(135deg, #3b6cf6, #7a5cff);
+      box-shadow: 0 10px 28px rgba(76, 92, 255, .28);
+    }
+
+    .voice-hero h3 { margin: 2px 0 6px; font-size: 24px; letter-spacing: -.6px; color: #fff; }
+    .voice-hero p { margin: 0; color: rgba(255, 255, 255, .9); font-size: 14px; max-width: 440px; }
+    .voice-hero .eyebrow-light { margin: 0; font-size: 11px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: rgba(255, 255, 255, .8); }
+    .hero-btn { background: #fff; color: #3b4fd6; font-size: 15px; min-height: 48px; padding: 12px 22px; }
+    .hero-btn:hover:not(:disabled) { background: #f1f4ff; }
+
+    .nav-button[data-view="voice"] { color: var(--primary); }
+    .detail-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 17px; }
+    .g-blank { display: inline-block; min-width: 80px; border-bottom: 2px solid var(--primary); }
+
+    @media (max-width: 560px) {
+      .voice-hero { padding: 20px 18px; }
+      .hero-btn { width: 100%; }
+    }
+
+    /* ---------- Cores, telemóvel e correções ---------- */
+    html { -webkit-text-size-adjust: 100%; }
+    body { touch-action: manipulation; }
+
+    .brand { cursor: pointer; border-radius: 14px; }
+    .brand:focus-visible { outline: 2px solid var(--primary); outline-offset: 4px; }
+
+    /* cada separador tem a sua cor */
+    .nav-button { --nav-c: 59, 108, 246; }
+    .nav-button[data-view="dash"] { --nav-c: 59, 108, 246; }
+    .nav-button[data-view="home"] { --nav-c: 8, 145, 178; }
+    .nav-button[data-view="grammar"] { --nav-c: 139, 92, 246; }
+    .nav-button[data-view="vocabulary"] { --nav-c: 22, 163, 74; }
+    .nav-button[data-view="review"] { --nav-c: 234, 111, 35; }
+    .nav-button[data-view="progress"] { --nav-c: 79, 70, 229; }
+    .nav-button[data-view="voice"] { --nav-c: 219, 39, 119; }
+    .nav-button[data-view="diagnostic"] { --nav-c: 202, 138, 4; }
+    .nav-button[data-view="ailab"] { --nav-c: 192, 38, 211; }
+    .nav-button .nav-icon { color: rgb(var(--nav-c)); font-weight: 800; }
+    .nav-button:hover { background: rgba(var(--nav-c), .10); }
+    .nav-button.active { background: rgba(var(--nav-c), .14); color: rgb(var(--nav-c)); }
+
+    /* respostas: violeta, para não se confundirem com os botões azuis */
+    .option:hover:not(:disabled) { border-color: #a58bf8; background: rgba(139, 92, 246, .08); }
+    .option:nth-child(1) .option-letter { background: rgba(59, 108, 246, .14); color: #3b6cf6; }
+    .option:nth-child(2) .option-letter { background: rgba(139, 92, 246, .14); color: #8b5cf6; }
+    .option:nth-child(3) .option-letter { background: rgba(234, 111, 35, .16); color: #d9621b; }
+    .option:nth-child(4) .option-letter { background: rgba(22, 163, 74, .14); color: #15803d; }
+    .option:nth-child(5) .option-letter { background: rgba(120, 130, 150, .18); color: var(--muted); }
+    .option.correct .option-letter { background: rgba(22, 163, 74, .22); color: var(--green); }
+    .option.incorrect .option-letter { background: rgba(194, 59, 69, .2); color: var(--red); }
+
+    .button.success { background: #16a34a; color: #fff; }
+    .button.success:hover:not(:disabled) { background: #15803d; }
+
+    .lesson-card:nth-child(4n+2) .lesson-number { background: rgba(139, 92, 246, .14); color: #8b5cf6; }
+    .lesson-card:nth-child(4n+3) .lesson-number { background: rgba(234, 111, 35, .15); color: #d9621b; }
+    .lesson-card:nth-child(4n+4) .lesson-number { background: rgba(22, 163, 74, .14); color: #15803d; }
+
+    /* página inicial: atalhos coloridos */
+    .quick-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; }
+
+    .quick-card {
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-top: 4px solid var(--qc);
+      border-radius: 18px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      color: var(--text);
+      text-align: left;
+      transition: transform .15s;
+    }
+
+    .quick-card:hover { transform: translateY(-2px); }
+    .quick-card .qi { display: grid; place-items: center; width: 40px; height: 40px; margin-bottom: 10px; border-radius: 12px; background: var(--qb); color: var(--qc); font-size: 18px; font-weight: 800; }
+    .quick-card h4 { margin: 0 0 4px; font-size: 16px; }
+    .quick-card p { margin: 0; color: var(--muted); font-size: 12px; }
+
+    /* sequência: pode esconder-se */
+    .switch-row { display: flex; align-items: center; gap: 10px; font-size: 14px; cursor: pointer; }
+    .switch-row input { width: 18px; height: 18px; accent-color: var(--primary); }
+    .no-streak #streak-pill { display: none; }
+    .no-streak .stats .stat-card:first-child { display: none; }
+    .no-streak .stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+    /* gráfico semanal: o objetivo vai para uma legenda e os números têm espaço por cima */
+    .chart-area { margin-top: 34px; }
+    .chart-legend { display: flex; align-items: center; gap: 8px; margin-top: 2px; color: var(--muted); font-size: 12px; }
+    .legend-dash { display: inline-block; width: 22px; border-top: 2px dashed var(--muted); }
+
+    @media (max-width: 850px) {
+      .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .no-streak .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+      /* menu em duas linhas, com o ícone por cima do nome */
+      .sidebar { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; overflow: visible; padding: 8px; }
+      .nav-button { flex-direction: column; justify-content: center; gap: 4px; min-width: 0; margin: 0; padding: 9px 2px; font-size: 11px; line-height: 1.1; text-align: center; white-space: nowrap; }
+      .nav-icon { width: auto; font-size: 18px; }
+
+      /* 16px evita o zoom automático do iPhone quando se toca num campo */
+      input, select, textarea, .input, .select, .textarea, .search-input, .v-chip select { font-size: 16px; }
+    }
+
+    @media (max-width: 560px) {
+      .quick-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+      .quick-card { padding: 14px; }
+    }
     </style>
 </head>
 
 <body>
   <div class="app">
     <header class="topbar">
-      <div class="brand">
+      <div class="brand" id="brand-home" role="button" tabindex="0" aria-label="Back to the app" title="Back to the app">
         <div class="brand-icon">En</div>
         <div>
           <h1>Voice Practice</h1>
@@ -1203,6 +1337,7 @@
 
       document.getElementById('btn-connect').addEventListener('click', () => toggleConnectCard());
       document.getElementById('btn-back').addEventListener('click', backToApp);
+      document.getElementById('brand-home').addEventListener('click', backToApp);
 
       document.getElementById('cfg-test').addEventListener('click', async () => {
         readConnectFields();
@@ -1236,6 +1371,9 @@
     const Voice = (function () {
       const $ = id => document.getElementById(id);
       const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+      // iPhone/iPad: o reconhecimento de fala só arranca com um toque e não reinicia sozinho
+      const IOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+        (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
       const FRIEND = 'Friendly everyday chat with a curious friend, not an exam. Share short opinions or anecdotes of your own (you may invent them) and ask follow-up questions. Topic: ';
 
@@ -1304,7 +1442,8 @@
         continueResolve: null,
         fixes: [],
         learned: [],
-        visible: false
+        visible: false,
+        watchdog: null
       };
 
       /* ---- arranque ---- */
@@ -1343,6 +1482,16 @@
         if ('speechSynthesis' in window) {
           window.speechSynthesis.onvoiceschanged = pickVoice;
           pickVoice();
+        }
+
+        if (IOS) {
+          $('v-opt-hands').checked = false;
+          if (SR) {
+            $('v-support').innerHTML =
+              '<div class="info-box" style="margin:14px 0 0"><strong>iPhone tip:</strong> tap 🎙, speak, and your words appear in the box below. ' +
+              'Tap Send when you are happy (or 🎙 again to add more). If the microphone does nothing, check ' +
+              'Settings › General › Keyboard › Enable Dictation.</div>';
+          }
         }
 
         if (!SR) {
@@ -1767,6 +1916,7 @@
 
       function resetListening() {
         clearTimeout(state.autoTimer);
+        clearTimeout(state.watchdog);
         state.draft = '';
         state.interim = '';
         state.wantListening = false;
@@ -1794,9 +1944,10 @@
           return;
         }
 
+        // Se a IA ainda está a falar, pára-a e abre o microfone no mesmo toque
         if (state.speaking) {
           stopSpeaking();
-          return;
+          state.speaking = false;
         }
 
         if (state.busy) return;
@@ -1810,13 +1961,22 @@
           return;
         }
 
-        if (state.wantListening || state.speaking || state.busy || state.continueResolve) return;
+        if (state.wantListening || state.busy || state.continueResolve) return;
+
+        if (state.speaking) {
+          stopSpeaking();
+          state.speaking = false;
+        }
 
         startListening(true);
       }
 
       function startListening(pt) {
-        if (!SR || state.wantListening || state.busy || state.speaking || state.continueResolve) return;
+        if (!SR || state.wantListening || state.busy || state.continueResolve) return;
+
+        // Liberta o áudio da síntese de voz antes de abrir o microfone (importante no iPhone)
+        if ('speechSynthesis' in window && (IOS || state.speaking)) window.speechSynthesis.cancel();
+        state.speaking = false;
 
         state.draft = '';
         state.interim = '';
@@ -1843,7 +2003,7 @@
 
         recognition.lang = state.ptMode ? 'pt-PT' : 'en-GB';
         recognition.interimResults = true;
-        recognition.continuous = true;
+        recognition.continuous = !IOS;
         recognition.maxAlternatives = 1;
 
         recognition.onresult = event => {
@@ -1867,6 +2027,7 @@
             }
           }
 
+          clearTimeout(state.watchdog);
           state.interim = interim;
           updateLive();
           scheduleAutoSend();
@@ -1875,20 +2036,27 @@
         recognition.onerror = event => {
           if (state.recognition !== recognition) return;
 
+          const blocked = IOS
+            ? 'Microphone or speech recognition blocked. In Safari tap aA › Website Settings and allow the microphone, and check Settings › General › Keyboard › Enable Dictation.'
+            : 'Microphone blocked. Allow the microphone for this site in your browser settings.';
+
           const messages = {
-            'not-allowed': 'Microphone blocked. Allow the microphone for this site in your browser settings.',
-            'service-not-allowed': 'Microphone blocked. Allow the microphone for this site in your browser settings.',
+            'not-allowed': blocked,
+            'service-not-allowed': blocked,
             'audio-capture': 'No microphone found.',
             'network': 'Speech recognition needs an internet connection.'
           };
 
-          // "no-speech" e "aborted" são normais: continua a ouvir
           if (messages[event.error]) {
             showToast(messages[event.error]);
+            clearTimeout(state.watchdog);
             state.wantListening = false;
             state.sendOnEnd = false;
             state.draft = '';
             state.interim = '';
+            updateMic();
+          } else if (event.error !== 'no-speech' && event.error !== 'aborted') {
+            showToast('Speech recognition problem: ' + event.error + '. Tap 🎙 to try again.');
           }
         };
 
@@ -1900,9 +2068,25 @@
             return;
           }
 
-          // O browser termina sozinho depois de silêncio: volta a ouvir
+          // O browser termina sozinho depois de silêncio
           if (state.wantListening) {
             state.recognition = null;
+
+            // iPhone: não deixa reiniciar sem um toque. O texto passa para a caixa de escrita
+            if (IOS) {
+              const captured = collectDraft();
+              resetListening();
+
+              if (captured) {
+                putInInput(captured);
+                showToast('Edit if you need, then tap Send. Tap 🎙 to add more.');
+              } else {
+                showToast('I did not hear anything. Tap 🎙 and try again.');
+              }
+              return;
+            }
+
+            // Computador: volta a ouvir
 
             setTimeout(() => {
               if (state.wantListening && !state.recognition) beginRecognition();
@@ -1916,11 +2100,28 @@
         try {
           state.recognition = recognition;
           recognition.start();
+
+          // iPhone: se nada chegar em 10 segundos, desbloqueia em vez de ficar à espera
+          if (IOS) {
+            clearTimeout(state.watchdog);
+            state.watchdog = setTimeout(() => {
+              if (state.wantListening && !collectDraft()) {
+                showToast('No audio detected. Tap 🎙 and try again.');
+                stopListening();
+              }
+            }, 10000);
+          }
         } catch (error) {
           state.recognition = null;
           state.wantListening = false;
           updateMic();
+          showToast('Could not start the microphone. Tap 🎙 to try again.');
         }
+      }
+
+      function putInInput(text) {
+        const input = $('v-type');
+        input.value = ((input.value ? input.value.trim() + ' ' : '') + text).slice(0, 500);
       }
 
       function completeListening() {
@@ -1930,7 +2131,11 @@
 
         resetListening();
 
-        if (send && text) sendUser(text, pt);
+        if (send && text) {
+          sendUser(text, pt);
+        } else if (send) {
+          showToast('Nothing was captured. Tap 🎙 and try again.');
+        }
       }
 
       // send = true envia o que foi dito; false descarta
@@ -2009,11 +2214,13 @@
 
           let finished = false;
           let guard;
+          let poll;
 
           const done = () => {
             if (finished) return;
             finished = true;
             clearTimeout(guard);
+            clearInterval(poll);
             state.speaking = false;
             updateMic();
             resolve();
@@ -2031,6 +2238,12 @@
           state.speaking = true;
           updateMic();
           window.speechSynthesis.speak(utterance);
+
+          // No iPhone o onend nem sempre dispara: verifica também se a voz já parou
+          const startedAt = Date.now();
+          poll = setInterval(() => {
+            if (Date.now() - startedAt > 800 && !window.speechSynthesis.speaking && !window.speechSynthesis.pending) done();
+          }, 300);
         });
       }
 
@@ -2117,7 +2330,7 @@
           const data = await apiPost('voiceSummary', {
             scenario: state.scenario,
             history: state.history.slice(),
-            seconds: 0,
+            seconds: Math.min(state.seconds, 3600),
             learned: state.learned.slice()
           });
 
