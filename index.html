@@ -804,9 +804,17 @@
     .v-phrase .head { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-weight: 700; }
     .v-phrase .meaning, .v-phrase .example { display: block; margin-top: 3px; color: var(--muted); font-size: 12px; }
 
+    .v-meter { display: flex; align-items: center; gap: 10px; margin: 0 0 8px; color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; }
+    .v-meter-bar { flex: 1; height: 8px; overflow: hidden; border-radius: 99px; background: var(--track); }
+    .v-meter-bar i { display: block; height: 100%; width: 0; border-radius: 99px; background: var(--red); transition: width .12s; }
+    .v-say-result { margin-top: 8px; padding: 8px 10px; border-radius: 10px; background: var(--surface); color: var(--text); font-size: 13px; }
+    .v-say-result.ok { background: var(--green-light); color: var(--green-text); }
+    .v-say-result.bad { background: var(--red-light); color: var(--red-text); }
+
     @media (max-width: 560px) {
       .v-subs { grid-template-columns: 1fr; }
     }
+
 /* ---------- Light refresh ---------- */
     :root {
       --bg: #f6f8fc;
@@ -1010,10 +1018,63 @@
       .quick-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
       .quick-card { padding: 14px; }
     }
+
+    /* ---------- Cada secção tem a sua cor ---------- */
+    body { --v-rgb: 239, 91, 72; --primary: rgb(var(--v-rgb)); --primary-light: rgba(var(--v-rgb), .13); --primary-border: rgba(var(--v-rgb), .38); }
+    body[data-view="dash"] { --v-rgb: 239, 91, 72; }
+    body[data-view="home"] { --v-rgb: 14, 165, 233; }
+    body[data-view="grammar"] { --v-rgb: 139, 92, 246; }
+    body[data-view="vocabulary"] { --v-rgb: 22, 163, 74; }
+    body[data-view="review"] { --v-rgb: 245, 158, 11; }
+    body[data-view="diary"] { --v-rgb: 13, 148, 136; }
+    body[data-view="progress"] { --v-rgb: 79, 70, 229; }
+    body[data-view="voice"] { --v-rgb: 219, 39, 119; }
+    body[data-view="diagnostic"] { --v-rgb: 180, 83, 9; }
+    body[data-view="ailab"] { --v-rgb: 192, 38, 211; }
+    :root[data-theme="dark"] body { --on-primary: #fff; }
+
+    .nav-button[data-view="dash"] { --nav-c: 239, 91, 72; }
+    .nav-button[data-view="home"] { --nav-c: 14, 165, 233; }
+    .nav-button[data-view="grammar"] { --nav-c: 139, 92, 246; }
+    .nav-button[data-view="vocabulary"] { --nav-c: 22, 163, 74; }
+    .nav-button[data-view="review"] { --nav-c: 245, 158, 11; }
+    .nav-button[data-view="diary"] { --nav-c: 13, 148, 136; }
+    .nav-button[data-view="progress"] { --nav-c: 79, 70, 229; }
+    .nav-button[data-view="voice"] { --nav-c: 219, 39, 119; }
+    .nav-button[data-view="diagnostic"] { --nav-c: 180, 83, 9; }
+    .nav-button[data-view="ailab"] { --nav-c: 192, 38, 211; }
+
+    .button:hover:not(:disabled) { background: var(--primary); filter: brightness(.92); }
+    .button.secondary:hover:not(:disabled) { filter: none; }
+    .button.success:hover:not(:disabled) { background: #15803d; filter: none; }
+
+    :root:not([data-theme="dark"]) body { background: linear-gradient(180deg, rgba(var(--v-rgb), .11) 0, #f6f8fc 420px) no-repeat, var(--bg); }
+    .card { border-top: 3px solid rgba(var(--v-rgb), .45); }
+    .quote-banner { background: linear-gradient(135deg, rgba(var(--v-rgb), .16), rgba(255, 196, 120, .18)); border-color: rgba(var(--v-rgb), .28); }
+    .lesson-hero { background: linear-gradient(135deg, rgba(var(--v-rgb), .14), rgba(255, 255, 255, .35)); border-color: rgba(var(--v-rgb), .3); }
+    .voice-hero { background: linear-gradient(135deg, #e0457b, #8b5cf6); box-shadow: 0 10px 28px rgba(224, 69, 123, .28); }
+    .hero-btn { color: #c2255c; }
+    .brand-icon { background: linear-gradient(135deg, #ff9a56, #e0457b); box-shadow: 0 6px 16px rgba(224, 69, 123, .28); }
+
+    /* plano do dia, estatísticas pequenas, separadores do Review */
+    .mini-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-bottom: 16px; }
+    .mini-stats .stat-card { padding: 14px; }
+    .mini-stats .stat-value { font-size: 24px; }
+
+    .plan-row { display: flex; align-items: center; gap: 12px; width: 100%; margin-top: 10px; padding: 14px 16px; border: 1px solid var(--border); border-left: 5px solid var(--pc); border-radius: 14px; background: var(--surface); color: var(--text); text-align: left; box-shadow: var(--shadow); }
+    .plan-row .check { display: grid; place-items: center; flex: 0 0 28px; width: 28px; height: 28px; border: 2px solid var(--pc); border-radius: 50%; color: #fff; font-weight: 800; }
+    .plan-row.done .check { background: var(--pc); }
+    .plan-row .pt { flex: 1; font-weight: 700; }
+    .plan-row .ps { display: block; color: var(--muted); font-size: 12px; font-weight: 400; }
+
+    .mode-tabs { display: flex; gap: 8px; margin-bottom: 14px; }
+    .mode-tab { flex: 1; padding: 10px 12px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); color: var(--text-soft); font-weight: 700; }
+    .mode-tab.active { background: rgba(var(--v-rgb), .14); border-color: rgba(var(--v-rgb), .45); color: rgb(var(--v-rgb)); }
+    .mode-tab span { margin-left: 6px; padding: 1px 8px; border-radius: 99px; background: rgba(var(--v-rgb), .18); font-size: 12px; }
     </style>
 </head>
 
-<body>
+<body data-view="voice">
   <div class="app">
     <header class="topbar">
       <div class="brand" id="brand-home" role="button" tabindex="0" aria-label="Back to the app" title="Back to the app">
@@ -1083,7 +1144,10 @@
                 <label class="v-chip"><input type="checkbox" id="v-opt-pause" checked> Pause on fixes</label>
                 <label class="v-chip"><input type="checkbox" id="v-opt-hands" checked> Hands-free</label>
                 <label class="v-chip"><input type="checkbox" id="v-opt-auto"> Auto-send</label>
-                <label class="v-chip"><input type="checkbox" id="v-opt-voice" checked> Voice</label>
+                <label class="v-chip"><input type="checkbox" id="v-opt-voice" checked> Sound</label>
+                <label class="v-chip"><input type="checkbox" id="v-opt-ai"> AI listening</label>
+                <label class="v-chip"><input type="checkbox" id="v-opt-say" checked> Say it</label>
+                <label class="v-chip">Voice <select id="v-voice-select"></select></label>
                 <label class="v-chip">Speed
                   <select id="v-opt-rate">
                     <option value="0.8">Slow</option>
@@ -1101,6 +1165,7 @@
               <div class="v-log" id="v-log" aria-live="polite"></div>
 
               <div class="v-live" id="v-live"></div>
+              <div class="v-meter hidden" id="v-meter"><span id="v-meter-time">0:00</span><div class="v-meter-bar"><i id="v-meter-fill"></i></div></div>
               <div style="text-align:center;margin-bottom:6px"><button class="v-link hidden" id="v-btn-discard">✕ Discard what I said</button></div>
               <div class="v-hint hidden" id="v-hint"></div>
 
@@ -1208,9 +1273,9 @@
       }
 
       // Só repete pedidos que não gravam nada na folha
-      const retryable = ['ping', 'voiceTurn', 'voiceHint'].indexOf(action) !== -1;
+      const retryable = ['ping', 'voiceTurn', 'voiceHint', 'voiceAudioTurn', 'voiceSayIt'].indexOf(action) !== -1;
       const attempts = retryable ? 2 : 1;
-      const timeoutMs = action === 'voiceSummary' ? 60000 : 40000;
+      const timeoutMs = (action === 'voiceSummary' || action === 'voiceAudioTurn') ? 60000 : 40000;
 
       let lastError = null;
 
@@ -1366,6 +1431,67 @@
       if (!lsGet(LS_URL) || !lsGet(LS_TOKEN)) toggleConnectCard(true);
     }
 
+    /* ---------- Voz feminina para tudo o que a app diz ---------- */
+
+    const FEMALE_VOICE = /(female|woman|serena|kate\b|martha|stephanie|samantha|karen|moira|tessa|fiona|victoria|susan|allison|ava\b|zoe|nicky|libby|sonia|hazel|emma|amy|joanna|salli|kimberly|ivy|olivia|natasha|catherine|sandy|shelley|flo\b|zira|jenny|aria|michelle|joana|maria|helena|catarina)/i;
+    const MALE_VOICE = /(\bmale\b|daniel|arthur|oliver|gordon|fred\b|alex\b|aaron|rishi|ralph|reed|rocko|grandpa|albert|bruce|junior|nathan|evan|tom\b|ryan|mark\b|guy\b|george|brian|liam|matthew|christopher|james|david|eddy|jorge|diego|ricardo|joão)/i;
+
+    function scoreVoice(voice) {
+      const lang = String(voice.lang || '').replace('_', '-');
+      const name = String(voice.name || '');
+
+      if (!/^en/i.test(lang)) return -1000;
+
+      let score = 0;
+
+      if (lang === 'en-GB') score += 30;
+      else if (/^en-(AU|IE|US|ZA|IN)/i.test(lang)) score += 10;
+
+      if (FEMALE_VOICE.test(name)) score += 60;
+      if (MALE_VOICE.test(name)) score -= 100;
+      if (/enhanced|premium|neural|natural/i.test(name)) score += 8;
+
+      return score;
+    }
+
+    function englishVoices() {
+      if (!('speechSynthesis' in window)) return [];
+      return window.speechSynthesis.getVoices().filter(v => /^en/i.test(String(v.lang || '').replace('_', '-')));
+    }
+
+    // Escolhe a melhor voz feminina disponível (ou a que o utilizador escolheu).
+    // Se só houver vozes masculinas, sobe o tom para soar mais feminina.
+    function chooseVoice(preferredName) {
+      const list = englishVoices();
+
+      if (!list.length) return { voice: null, pitch: 1.2 };
+
+      const chosen = preferredName && list.find(v => v.name === preferredName);
+      if (chosen) return { voice: chosen, pitch: 1 };
+
+      let best = null;
+      let bestScore = -Infinity;
+
+      list.forEach(v => {
+        const s = scoreVoice(v);
+        if (s > bestScore) { best = v; bestScore = s; }
+      });
+
+      return { voice: best, pitch: bestScore >= 60 ? 1 : 1.2 };
+    }
+
+    function fillVoiceSelect(select, selectedName) {
+      if (!select) return;
+
+      const list = englishVoices().slice().sort((a, b) => scoreVoice(b) - scoreVoice(a));
+
+      select.innerHTML = '<option value="">Auto (female)</option>' + list.map(v =>
+        '<option value="' + escapeAttr(v.name) + '">' + escapeHtml(v.name + ' (' + v.lang + ')') + '</option>'
+      ).join('');
+
+      select.value = selectedName && list.some(v => v.name === selectedName) ? selectedName : '';
+    }
+
     /* ---------- Voice conversation (só na versão alojada: o microfone precisa de página própria) ---------- */
 
     const Voice = (function () {
@@ -1374,6 +1500,7 @@
       // iPhone/iPad: o reconhecimento de fala só arranca com um toque e não reinicia sozinho
       const IOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
         (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+      const MOBILE = IOS || /Android/i.test(navigator.userAgent);
 
       const FRIEND = 'Friendly everyday chat with a curious friend, not an exam. Share short opinions or anecdotes of your own (you may invent them) and ask follow-up questions. Topic: ';
 
@@ -1394,6 +1521,25 @@
             { id: 'goals', label: 'Dreams, goals and future plans', brief: FRIEND + 'dreams, goals and plans for the future.' },
             { id: 'people', label: 'Describing people and places', brief: FRIEND + 'describing family, friends and favourite places.' },
             { id: 'debate', label: 'A friendly debate', brief: FRIEND + 'a light friendly debate (for example remote work vs office, city vs countryside). The partner politely takes the opposite side.' }
+          ]
+        },
+        {
+          label: 'Real life',
+          items: [
+            { id: 'doctor', label: 'At the doctor’s', brief: 'The partner is a doctor at a clinic; the learner is a patient describing how they feel and asking questions about the treatment.' },
+            { id: 'pharmacy', label: 'At the pharmacy', brief: 'The partner is a pharmacist; the learner asks for something for a cold and how to take it.' },
+            { id: 'bank', label: 'At the bank', brief: 'The partner is a bank clerk; the learner wants to open an account and asks about cards and fees.' },
+            { id: 'flat', label: 'Renting a flat', brief: 'The partner is a landlord or estate agent; the learner asks about the price, bills, deposit and house rules.' },
+            { id: 'phone', label: 'Customer service call', brief: 'The partner works in customer service; the learner phones about a problem with an order or an internet connection.' },
+            { id: 'complaint', label: 'Politely complaining', brief: 'The partner is a restaurant manager; the learner politely complains about a mistake with the food or the bill.' },
+            { id: 'neighbour', label: 'Chatting with a neighbour', brief: 'Friendly small talk with a new neighbour in the lift or in the street.' },
+            { id: 'dinner', label: 'Dinner at a friend’s house', brief: 'The learner meets a friend’s parents at dinner and makes conversation. The partner is the friend’s mother or father.' },
+            { id: 'taxi', label: 'Taxi or ride-share', brief: 'The partner is a taxi driver; the learner gives directions and chats about the city.' },
+            { id: 'gym', label: 'Joining a gym', brief: 'The partner is a gym receptionist; the learner asks about memberships, classes and prices.' },
+            { id: 'cinema', label: 'Making plans to see a film', brief: 'Two friends decide which film to see, when to go and what to eat. The partner is the friend.' },
+            { id: 'lost', label: 'Lost luggage at the airport', brief: 'The partner works at the lost luggage desk; the learner reports a missing suitcase and gives details.' },
+            { id: 'hair', label: 'At the hairdresser', brief: 'The partner is a hairdresser; the learner explains the haircut they want and chats during it.' },
+            { id: 'party', label: 'Meeting people at a party', brief: 'Introductions at a party: hobbies, jobs and where everyone comes from. The partner is a friendly guest.' }
           ]
         },
         {
@@ -1443,7 +1589,13 @@
         fixes: [],
         learned: [],
         visible: false,
-        watchdog: null
+        watchdog: null,
+        rec: null,
+        recTimer: null,
+        sayTarget: null,
+        sayAttempts: 0,
+        sayBox: null,
+        sessionKey: ''
       };
 
       /* ---- arranque ---- */
@@ -1467,7 +1619,10 @@
         $('v-btn-send').addEventListener('click', sendTyped);
         $('v-btn-hint').addEventListener('click', showHint);
         $('v-btn-end').addEventListener('click', finishSession);
-        $('v-btn-discard').addEventListener('click', () => finishListening(false));
+        $('v-btn-discard').addEventListener('click', () => {
+          if (state.rec) cancelRecording();
+          else finishListening(false);
+        });
         $('v-opt-fix').addEventListener('change', applyFixToggle);
 
         $('v-btn-fixes').addEventListener('click', () => {
@@ -1480,21 +1635,29 @@
         });
 
         if ('speechSynthesis' in window) {
-          window.speechSynthesis.onvoiceschanged = pickVoice;
-          pickVoice();
+          window.speechSynthesis.onvoiceschanged = refreshVoices;
+          refreshVoices();
         }
+
+        $('v-voice-select').addEventListener('change', () => {
+          lsSet('ed-voice-name', $('v-voice-select').value);
+          speak('Hi! This is how I sound.');
+        });
+
+        // No telemóvel a IA ouve e transcreve a gravação: sem limite de silêncio
+        $('v-opt-ai').checked = MOBILE && supportsRecording();
+        $('v-opt-ai').addEventListener('change', applyEngine);
+        applyEngine();
 
         if (IOS) {
           $('v-opt-hands').checked = false;
-          if (SR) {
-            $('v-support').innerHTML =
-              '<div class="info-box" style="margin:14px 0 0"><strong>iPhone tip:</strong> tap 🎙, speak, and your words appear in the box below. ' +
-              'Tap Send when you are happy (or 🎙 again to add more). If the microphone does nothing, check ' +
-              'Settings › General › Keyboard › Enable Dictation.</div>';
-          }
+          $('v-support').innerHTML =
+            '<div class="info-box" style="margin:14px 0 0"><strong>iPhone tip:</strong> tap 🎙, speak for as long as you like ' +
+            '(the AI listens and transcribes), then tap ➤ to send. For a female British voice download “Serena” or “Kate” in ' +
+            'Settings › Accessibility › Spoken Content › Voices › English.</div>';
         }
 
-        if (!SR) {
+        if (!SR && !supportsRecording()) {
           $('v-support').innerHTML =
             '<div class="info-box" style="margin:14px 0 0">This browser does not support speech recognition. ' +
             'Use Chrome, Edge or Safari for voice. You can still type your answers.</div>';
@@ -1555,6 +1718,8 @@
         state.fixes = [];
         state.learned = [];
         state.sessionId++;
+        state.sayTarget = null;
+        state.sessionKey = Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
         state.visible = true;
 
         releaseContinue(true);
@@ -1624,11 +1789,30 @@
         actions.appendChild(listen);
 
         if (withContinue) {
-          const go = document.createElement('button');
-          go.className = 'button small';
-          go.textContent = 'Continue ▶';
-          go.addEventListener('click', () => releaseContinue(false));
-          actions.appendChild(go);
+          if ($('v-opt-say').checked) {
+            // Obrigatório: tens de dizer a frase certa em voz alta (ou saltar)
+            const say = document.createElement('button');
+            say.className = 'button small';
+            say.textContent = '🎙 Say it';
+            say.addEventListener('click', onMicTap);
+            actions.appendChild(say);
+
+            const skip = document.createElement('button');
+            skip.className = 'button small';
+            skip.style.background = 'var(--surface-3)';
+            skip.style.color = 'var(--text)';
+            skip.textContent = 'Skip ▶';
+            skip.addEventListener('click', () => releaseContinue(false));
+            actions.appendChild(skip);
+
+            state.sayBox = box;
+          } else {
+            const go = document.createElement('button');
+            go.className = 'button small';
+            go.textContent = 'Continue ▶';
+            go.addEventListener('click', () => releaseContinue(false));
+            actions.appendChild(go);
+          }
         }
 
         box.appendChild(actions);
@@ -1698,6 +1882,9 @@
       }
 
       function releaseContinue(skip) {
+        state.sayTarget = null;
+        state.sayAttempts = 0;
+
         if (!state.continueResolve) return;
 
         const resolve = state.continueResolve;
@@ -1758,7 +1945,7 @@
 
       /* ---- turnos ---- */
 
-      async function aiTurn(userText, start, userWrap, viaPt) {
+      async function aiTurn(userText, start, userWrap, viaPt, audio) {
         const session = state.sessionId;
 
         setBusy(true);
@@ -1767,18 +1954,40 @@
         const typing = addTyping();
 
         try {
-          const data = await apiPost('voiceTurn', {
-            scenario: state.scenario,
-            history: state.history.slice(),
-            userText,
-            start: !!start,
-            viaPortuguese: !!viaPt
-          });
+          const data = audio
+            ? await apiPost('voiceAudioTurn', {
+              scenario: state.scenario,
+              history: state.history.slice(),
+              audio: audio.data,
+              mime: audio.mime
+            })
+            : await apiPost('voiceTurn', {
+              scenario: state.scenario,
+              history: state.history.slice(),
+              userText,
+              start: !!start,
+              viaPortuguese: !!viaPt
+            });
 
           typing.remove();
 
           // A sessão terminou ou recomeçou entretanto: ignora esta resposta
           if (session !== state.sessionId) return;
+
+          // Com áudio, a IA devolve também o que ouviu
+          if (audio) {
+            userText = String(data.transcript || '').trim();
+
+            if (!userText) {
+              if (userWrap) userWrap.remove();
+              setBusy(false);
+              showToast('I could not understand the audio. Try again, a bit closer to the microphone.');
+              return;
+            }
+
+            const bubble = userWrap && userWrap.querySelector('.v-bubble');
+            if (bubble) bubble.textContent = (data.translation ? '🇵🇹 ' : '') + userText;
+          }
 
           let pause = false;
 
@@ -1820,6 +2029,10 @@
 
           // Mostra a resposta por escrito e espera que leias a correção
           if (pause && state.visible) {
+            const target = data.translation ? data.translation.english : (data.correction ? data.correction.better : '');
+            state.sayTarget = $('v-opt-say').checked && target ? target : null;
+            state.sayAttempts = 0;
+
             const skipped = await waitForContinue();
             if (skipped || session !== state.sessionId) return;
           }
@@ -1830,7 +2043,7 @@
 
           if (session !== state.sessionId || !state.visible) return;
 
-          if ($('v-opt-hands').checked && SR && !state.busy) startListening(false);
+          if ($('v-opt-hands').checked && (SR || useAiListening()) && !state.busy) startListening(false);
         } catch (error) {
           typing.remove();
 
@@ -1865,6 +2078,12 @@
         stopListening();
         stopSpeaking();
         input.value = '';
+
+        if (state.sayTarget) {
+          handleSayItText(text);
+          return;
+        }
+
         sendUser(text, false);
       }
 
@@ -1882,17 +2101,25 @@
         const label = $('v-mic-label');
 
         mic.classList.remove('listening', 'busy');
-        $('v-btn-discard').classList.toggle('hidden', !state.wantListening);
+        $('v-btn-discard').classList.toggle('hidden', !(state.wantListening || state.rec));
 
-        if (state.wantListening) {
+        if (state.rec) {
+          mic.classList.add('listening');
+          mic.textContent = '➤';
+          label.textContent = state.sayTarget
+            ? 'Say the sentence out loud, then tap ➤'
+            : 'Recording... take all the time you need, tap ➤ to send';
+        } else if (state.wantListening) {
           mic.classList.add('listening');
           mic.textContent = '➤';
           label.textContent = state.ptMode
             ? 'A ouvir em português... toca ➤ para enviar'
             : 'Listening... take your time, tap ➤ to send';
         } else if (state.continueResolve) {
-          mic.textContent = '▶';
-          label.textContent = 'Read the note above, then tap ▶ to continue';
+          mic.textContent = state.sayTarget ? '🎙' : '▶';
+          label.textContent = state.sayTarget
+            ? 'Tap 🎙 and say the correct sentence out loud (or Skip)'
+            : 'Read the note above, then tap ▶ to continue';
         } else if (state.busy) {
           mic.classList.add('busy');
           mic.textContent = '…';
@@ -1928,7 +2155,13 @@
       }
 
       function onMicTap() {
-        if (!SR) {
+        // Gravação em curso: tocar envia
+        if (state.rec) {
+          finishRecording(true);
+          return;
+        }
+
+        if (!useAiListening() && !SR) {
           showToast('This browser has no speech recognition. Please type your answer.');
           return;
         }
@@ -1940,6 +2173,12 @@
         }
 
         if (state.continueResolve) {
+          // "Say it": abre o microfone para repetires a frase certa
+          if (state.sayTarget) {
+            startListening(false);
+            return;
+          }
+
           releaseContinue(false);
           return;
         }
@@ -1972,7 +2211,14 @@
       }
 
       function startListening(pt) {
-        if (!SR || state.wantListening || state.busy || state.continueResolve) return;
+        if (state.wantListening || state.busy || state.rec || (state.continueResolve && !state.sayTarget)) return;
+
+        if (useAiListening()) {
+          startRecording();
+          return;
+        }
+
+        if (!SR) return;
 
         // Liberta o áudio da síntese de voz antes de abrir o microfone (importante no iPhone)
         if ('speechSynthesis' in window && (IOS || state.speaking)) window.speechSynthesis.cancel();
@@ -2132,7 +2378,8 @@
         resetListening();
 
         if (send && text) {
-          sendUser(text, pt);
+          if (state.sayTarget) handleSayItText(text);
+          else sendUser(text, pt);
         } else if (send) {
           showToast('Nothing was captured. Tap 🎙 and try again.');
         }
@@ -2165,6 +2412,7 @@
 
       // Para de ouvir e descarta o que foi dito
       function stopListening() {
+        if (state.rec) cancelRecording();
         clearTimeout(state.autoTimer);
 
         const recognition = state.recognition;
@@ -2175,17 +2423,282 @@
         }
       }
 
+
+      /* ---- gravação de áudio: a IA transcreve (sem limites de silêncio) ---- */
+
+      function supportsRecording() {
+        return !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia &&
+          (window.AudioContext || window.webkitAudioContext));
+      }
+
+      function useAiListening() {
+        return $('v-opt-ai').checked && supportsRecording();
+      }
+
+      function applyEngine() {
+        // Com a IA a ouvir, o português é detetado sozinho: o botão PT não faz falta
+        $('v-btn-pt').style.display = useAiListening() ? 'none' : '';
+      }
+
+      async function startRecording() {
+        if (state.rec) return;
+
+        // Liberta o áudio da síntese de voz (importante no iPhone)
+        if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+        state.speaking = false;
+
+        let stream;
+
+        try {
+          stream = await navigator.mediaDevices.getUserMedia({
+            audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true }
+          });
+        } catch (error) {
+          showToast(IOS
+            ? 'Microphone blocked. In Safari tap aA › Website Settings and allow the microphone.'
+            : 'Microphone blocked. Allow the microphone for this site in your browser settings.');
+          updateMic();
+          return;
+        }
+
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        const ctx = new AudioCtx();
+
+        try { await ctx.resume(); } catch (error) { /* ignore */ }
+
+        const source = ctx.createMediaStreamSource(stream);
+        const processor = ctx.createScriptProcessor(4096, 1, 1);
+        const mute = ctx.createGain();
+        mute.gain.value = 0;
+
+        const rec = { stream, ctx, source, processor, mute, chunks: [], rate: ctx.sampleRate, started: Date.now(), level: 0 };
+
+        processor.onaudioprocess = event => {
+          const data = event.inputBuffer.getChannelData(0);
+          rec.chunks.push(new Float32Array(data));
+
+          let sum = 0;
+          for (let i = 0; i < data.length; i += 16) sum += data[i] * data[i];
+          rec.level = Math.sqrt(sum / (data.length / 16));
+        };
+
+        source.connect(processor);
+        processor.connect(mute);
+        mute.connect(ctx.destination);
+
+        state.rec = rec;
+        state.draft = '';
+        state.interim = '';
+        updateMic();
+        showMeter(true);
+
+        state.recTimer = setInterval(() => {
+          const seconds = Math.floor((Date.now() - rec.started) / 1000);
+          $('v-meter-time').textContent = formatTime(seconds);
+          $('v-meter-fill').style.width = Math.min(100, Math.round(rec.level * 400)) + '%';
+
+          // Segurança: 2 minutos por gravação
+          if (seconds >= 120) finishRecording(true);
+        }, 150);
+      }
+
+      function showMeter(on) {
+        $('v-meter').classList.toggle('hidden', !on);
+        if (on) {
+          $('v-meter-time').textContent = '0:00';
+          $('v-meter-fill').style.width = '0%';
+        }
+      }
+
+      async function closeRecording(rec) {
+        clearInterval(state.recTimer);
+        showMeter(false);
+
+        try { rec.processor.disconnect(); rec.source.disconnect(); rec.mute.disconnect(); } catch (error) { /* ignore */ }
+        rec.stream.getTracks().forEach(track => track.stop());
+        try { await rec.ctx.close(); } catch (error) { /* ignore */ }
+      }
+
+      function cancelRecording() {
+        const rec = state.rec;
+        if (!rec) return;
+
+        state.rec = null;
+        closeRecording(rec);
+        updateMic();
+      }
+
+      async function finishRecording(send) {
+        const rec = state.rec;
+        if (!rec) return;
+
+        state.rec = null;
+        updateMic();
+        await closeRecording(rec);
+
+        if (!send) return;
+
+        if ((Date.now() - rec.started) < 700) {
+          showToast('Too short. Tap 🎙 and speak.');
+          return;
+        }
+
+        const audio = encodeWav(rec.chunks, rec.rate);
+
+        if (!audio) {
+          showToast('I could not hear you. Check the microphone and speak a bit louder.');
+          return;
+        }
+
+        if (state.sayTarget) handleSayItAudio(audio);
+        else sendAudio(audio);
+      }
+
+      // Converte a gravação em WAV mono de 16 kHz (pequeno e aceite pela IA)
+      function encodeWav(chunks, inputRate) {
+        let length = 0;
+        chunks.forEach(chunk => { length += chunk.length; });
+        if (!length) return null;
+
+        const merged = new Float32Array(length);
+        let offset = 0;
+        chunks.forEach(chunk => { merged.set(chunk, offset); offset += chunk.length; });
+
+        let peak = 0;
+        for (let i = 0; i < merged.length; i += 8) peak = Math.max(peak, Math.abs(merged[i]));
+        if (peak < 0.004) return null;
+
+        const targetRate = 16000;
+        const ratio = inputRate / targetRate;
+        const outLength = Math.floor(merged.length / ratio);
+        const pcm = new Int16Array(outLength);
+
+        for (let i = 0; i < outLength; i++) {
+          const start = Math.floor(i * ratio);
+          const end = Math.min(merged.length, Math.floor((i + 1) * ratio));
+          let sum = 0;
+          for (let j = start; j < end; j++) sum += merged[j];
+          const value = Math.max(-1, Math.min(1, sum / Math.max(1, end - start)));
+          pcm[i] = value < 0 ? value * 0x8000 : value * 0x7FFF;
+        }
+
+        const buffer = new ArrayBuffer(44 + pcm.length * 2);
+        const view = new DataView(buffer);
+        const write = (pos, text) => { for (let i = 0; i < text.length; i++) view.setUint8(pos + i, text.charCodeAt(i)); };
+
+        write(0, 'RIFF');
+        view.setUint32(4, 36 + pcm.length * 2, true);
+        write(8, 'WAVE');
+        write(12, 'fmt ');
+        view.setUint32(16, 16, true);
+        view.setUint16(20, 1, true);
+        view.setUint16(22, 1, true);
+        view.setUint32(24, targetRate, true);
+        view.setUint32(28, targetRate * 2, true);
+        view.setUint16(32, 2, true);
+        view.setUint16(34, 16, true);
+        write(36, 'data');
+        view.setUint32(40, pcm.length * 2, true);
+        for (let i = 0; i < pcm.length; i++) view.setInt16(44 + i * 2, pcm[i], true);
+
+        const bytes = new Uint8Array(buffer);
+        let binary = '';
+        for (let i = 0; i < bytes.length; i += 0x8000) {
+          binary += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+        }
+
+        return { mime: 'audio/wav', data: btoa(binary) };
+      }
+
+      function sendAudio(audio) {
+        if (state.busy) return;
+
+        releaseContinue(true);
+
+        const wrap = addBubble('user', '🎙 …', false);
+        aiTurn('', false, wrap, false, audio);
+      }
+
+      /* ---- "Say it": repetir em voz alta a frase certa ---- */
+
+      function words(text) {
+        return String(text || '').toLowerCase().replace(/[’‘]/g, "'").replace(/[^a-z0-9' ]+/g, ' ').split(/\s+/).filter(Boolean);
+      }
+
+      function similarity10(said, target) {
+        const a = words(said);
+        const b = words(target);
+        if (!b.length) return 0;
+
+        const set = new Set(a);
+        let hit = 0;
+        b.forEach(word => { if (set.has(word)) hit++; });
+
+        return Math.round(hit / Math.max(a.length, b.length) * 10);
+      }
+
+      function showSayResult(html, ok) {
+        const box = state.sayBox;
+        if (!box) return;
+
+        let area = box.querySelector('.v-say-result');
+
+        if (!area) {
+          area = document.createElement('div');
+          area.className = 'v-say-result';
+          box.appendChild(area);
+        }
+
+        area.className = 'v-say-result ' + (ok === true ? 'ok' : ok === false ? 'bad' : '');
+        area.textContent = html;
+        scrollLog();
+      }
+
+      function handleSayItText(text) {
+        evaluateSayIt({ transcript: text, match: similarity10(text, state.sayTarget), feedback: '' });
+      }
+
+      async function handleSayItAudio(audio) {
+        const target = state.sayTarget;
+        const session = state.sessionId;
+
+        showSayResult('Checking...', null);
+
+        try {
+          const result = await apiPost('voiceSayIt', { audio: audio.data, mime: audio.mime, target });
+
+          if (session !== state.sessionId || state.sayTarget !== target) return;
+          evaluateSayIt(result);
+        } catch (error) {
+          showSayResult('Could not check: ' + error.message + ' Tap 🎙 to try again, or Skip.', false);
+        }
+      }
+
+      function evaluateSayIt(result) {
+        state.sayAttempts++;
+
+        const passed = result.match >= 7;
+        const heard = result.transcript ? 'I heard: “' + result.transcript + '”. ' : '';
+
+        if (passed) {
+          showSayResult('✓ Well said! ' + (result.feedback || ''), true);
+          setTimeout(() => releaseContinue(false), 1200);
+          return;
+        }
+
+        if (state.sayAttempts >= 3) {
+          showSayResult(heard + (result.feedback || '') + ' Let’s move on.', false);
+          setTimeout(() => releaseContinue(false), 1800);
+          return;
+        }
+
+        showSayResult(heard + (result.feedback || 'Almost.') + ' Tap 🎙 to try again.', false);
+      }
+
       /* ---- voz do assistente ---- */
 
-      function pickVoice() {
-        const voices = window.speechSynthesis.getVoices();
-        if (!voices.length) return;
-
-        state.voice =
-          voices.find(v => v.lang === 'en-GB' && /female|google uk english female|kate|serena|libby|sonia/i.test(v.name)) ||
-          voices.find(v => v.lang === 'en-GB') ||
-          voices.find(v => /^en[-_]/i.test(v.lang)) ||
-          null;
+      function refreshVoices() {
+        fillVoiceSelect($('v-voice-select'), lsGet('ed-voice-name'));
       }
 
       // Em iOS/Safari a primeira síntese tem de nascer de um toque do utilizador
@@ -2208,9 +2721,11 @@
           window.speechSynthesis.cancel();
 
           const utterance = new SpeechSynthesisUtterance(String(text));
-          utterance.lang = 'en-GB';
+          const choice = chooseVoice($('v-voice-select').value || lsGet('ed-voice-name'));
+          utterance.lang = choice.voice ? choice.voice.lang : 'en-GB';
           utterance.rate = Number($('v-opt-rate').value) || 0.95;
-          if (state.voice) utterance.voice = state.voice;
+          utterance.pitch = choice.pitch;
+          if (choice.voice) utterance.voice = choice.voice;
 
           let finished = false;
           let guard;
@@ -2309,6 +2824,7 @@
         stopListening();
         stopSpeaking();
         state.sessionId++;
+        state.sayTarget = null;
         releaseContinue(true);
         clearInterval(state.timer);
         setBusy(false);
@@ -2321,17 +2837,24 @@
           return;
         }
 
-        const summary = $('v-summary');
-        summary.innerHTML = '<h4 class="content-title">Preparing your level...</h4><p class="hint">This takes a few seconds.</p>';
         showPanel('v-summary');
+        await requestSummary();
+      }
+
+      // Pode repetir-se: a conversa fica guardada e o servidor não duplica o resultado
+      async function requestSummary() {
+        const summary = $('v-summary');
+        summary.innerHTML = '<h4 class="content-title">Preparing your level...</h4><p class="hint">This takes a few seconds. Your conversation is safe.</p>';
 
         try {
           // O tempo de estudo já é contado pela app, por isso seconds = 0
           const data = await apiPost('voiceSummary', {
             scenario: state.scenario,
-            history: state.history.slice(),
+            history: state.history.slice(-60),
             seconds: Math.min(state.seconds, 3600),
-            learned: state.learned.slice()
+            learned: state.learned.slice(),
+            fixes: state.fixes.filter(item => item.note !== 'Português → inglês').slice(0, 30),
+            sessionKey: state.sessionKey
           });
 
           renderSummary(data);
@@ -2345,10 +2868,16 @@
 
           const note = document.createElement('div');
           note.className = 'error-box';
-          note.textContent = error.message;
+          note.textContent = error.message + ' Your conversation is safe: you can try again.';
+
+          const retry = document.createElement('button');
+          retry.className = 'button full';
+          retry.textContent = '↻ Try again';
+          retry.addEventListener('click', requestSummary);
 
           const button = document.createElement('button');
-          button.className = 'button full';
+          button.className = 'button secondary full';
+          button.style.marginTop = '10px';
           button.textContent = 'New conversation';
           button.addEventListener('click', () => showPanel('v-start'));
 
@@ -2358,7 +2887,7 @@
           back.textContent = '← Back to the app';
           back.addEventListener('click', backToApp);
 
-          summary.append(title, note, button, back);
+          summary.append(title, note, retry, button, back);
         }
       }
 
