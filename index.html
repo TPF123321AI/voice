@@ -1306,7 +1306,10 @@
 
           if (data) {
             if (!data.ok) {
-              throw Object.assign(new Error(data.error || 'Erro desconhecido.'), { final: true });
+              const outdated = data.error === 'Ação desconhecida.';
+              throw Object.assign(new Error(outdated
+                ? 'O servidor está desatualizado: cola o Code.gs novo e cria uma Nova versão da implementação.'
+                : (data.error || 'Erro desconhecido.')), { final: true, outdated });
             }
 
             return data;
@@ -1409,8 +1412,9 @@
         setConnectMessage('A testar...', 'info');
 
         try {
-          await apiPost('ping');
-          setConnectMessage('Ligação OK. Clica em Save.', 'ok');
+          const ping = await apiPost('ping');
+          const fresh = ping.version >= 5;
+          setConnectMessage(fresh ? 'Ligação OK. Clica em Save.' : 'Ligação OK, mas o servidor está desatualizado: cola o Code.gs novo e cria uma Nova versão da implementação.', fresh ? 'ok' : 'bad');
         } catch (error) {
           setConnectMessage(error.message, 'bad');
         }
@@ -1446,6 +1450,10 @@
 
       if (lang === 'en-GB') score += 30;
       else if (/^en-(AU|IE|US|ZA|IN)/i.test(lang)) score += 10;
+
+      // Vozes fixas preferidas: Martha (iPhone) e Google UK English Female (Chrome/Android)
+      if (/^martha/i.test(name)) score += 200;
+      else if (/google uk english female/i.test(name)) score += 190;
 
       if (FEMALE_VOICE.test(name)) score += 60;
       if (MALE_VOICE.test(name)) score -= 100;
@@ -1485,7 +1493,7 @@
 
       const list = englishVoices().slice().sort((a, b) => scoreVoice(b) - scoreVoice(a));
 
-      select.innerHTML = '<option value="">Auto (female)</option>' + list.map(v =>
+      select.innerHTML = '<option value="">Auto (Martha / Google UK Female)</option>' + list.map(v =>
         '<option value="' + escapeAttr(v.name) + '">' + escapeHtml(v.name + ' (' + v.lang + ')') + '</option>'
       ).join('');
 
@@ -1505,6 +1513,12 @@
       const FRIEND = 'Friendly everyday chat with a curious friend, not an exam. Share short opinions or anecdotes of your own (you may invent them) and ask follow-up questions. Topic: ';
 
       const GROUPS = [
+        {
+          label: 'Free talk',
+          items: [
+            { id: 'free', label: 'Free talk: you choose the topic', brief: 'Open conversation with a friendly partner. Start by warmly asking the learner what they would like to talk about today and offer three short ideas (for example their week, a hobby or something fun). Then follow their lead, ask follow-up questions and share short opinions of your own. Do not choose the topic for them.' }
+          ]
+        },
         {
           label: 'Everyday conversation',
           items: [
@@ -1645,7 +1659,7 @@
         });
 
         // No telemóvel a IA ouve e transcreve a gravação: sem limite de silêncio
-        $('v-opt-ai').checked = MOBILE && supportsRecording();
+        $('v-opt-ai').checked = supportsRecording();
         $('v-opt-ai').addEventListener('change', applyEngine);
         applyEngine();
 
@@ -2050,6 +2064,16 @@
           if (session !== state.sessionId) return;
 
           setBusy(false);
+
+          // Servidor com o Code.gs antigo: volta ao microfone do browser em vez de bloquear
+          if (audio && error.outdated) {
+            if (userWrap) userWrap.remove();
+            $('v-opt-ai').checked = false;
+            applyEngine();
+            showToast('The server needs the new Code.gs, so AI listening is off for now. Using the browser microphone instead.');
+            return;
+          }
+
           addBubble('ai', '⚠ ' + error.message, false);
         }
       }
