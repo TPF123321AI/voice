@@ -1019,6 +1019,10 @@
       .quick-card { padding: 14px; }
     }
 
+    /* ---------- Avisos no topo: em baixo o Safari do iPhone esconde-os ---------- */
+    .toast { top: calc(14px + env(safe-area-inset-top, 0px)); bottom: auto; right: 14px; left: 14px; max-width: none; text-align: center; transform: translateY(-20px); }
+    .toast.show { transform: translateY(0); }
+
     /* ---------- Cada secção tem a sua cor ---------- */
     body { --v-rgb: 239, 91, 72; --primary: rgb(var(--v-rgb)); --primary-light: rgba(var(--v-rgb), .13); --primary-border: rgba(var(--v-rgb), .38); }
     body[data-view="dash"] { --v-rgb: 239, 91, 72; }
@@ -1995,7 +1999,7 @@
             if (!userText) {
               if (userWrap) userWrap.remove();
               setBusy(false);
-              showToast('I could not understand the audio. Try again, a bit closer to the microphone.');
+              notify('I could not understand the audio. Try again, a bit closer to the microphone and speaking clearly.');
               return;
             }
 
@@ -2179,6 +2183,8 @@
       }
 
       function onMicTap() {
+        if (state.starting) return;
+
         // Gravação em curso: tocar envia
         if (state.rec) {
           finishRecording(true);
@@ -2235,7 +2241,7 @@
       }
 
       function startListening(pt) {
-        if (state.wantListening || state.busy || state.rec || (state.continueResolve && !state.sayTarget)) return;
+        if (state.wantListening || state.busy || state.rec || state.starting || (state.continueResolve && !state.sayTarget)) return;
 
         if (useAiListening()) {
           startRecording();
@@ -2450,6 +2456,16 @@
 
       /* ---- gravação de áudio: a IA transcreve (sem limites de silêncio) ---- */
 
+      // Avisa no topo do ecrã e por cima dos botões (em baixo o Safari esconde os avisos)
+      function notify(text) {
+        showToast(text);
+
+        const live = $('v-live');
+        const line = '⚠ ' + text;
+        live.textContent = line;
+        setTimeout(() => { if (live.textContent === line) live.textContent = ''; }, 9000);
+      }
+
       function supportsRecording() {
         return !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia &&
           (window.AudioContext || window.webkitAudioContext));
@@ -2465,11 +2481,26 @@
       }
 
       async function startRecording() {
-        if (state.rec) return;
+        if (state.rec || state.starting) return;
+        state.starting = true;
 
         // Liberta o áudio da síntese de voz (importante no iPhone)
         if ('speechSynthesis' in window) window.speechSynthesis.cancel();
         state.speaking = false;
+
+        // iPhone: o áudio só arranca se o AudioContext nascer DENTRO do toque,
+        // antes de qualquer espera (por isso é criado antes de pedir o microfone)
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        const ctx = new AudioCtx();
+
+        try { ctx.resume(); } catch (error) { /* ignore */ }
+
+        try {
+          const unlock = ctx.createBufferSource();
+          unlock.buffer = ctx.createBuffer(1, 1, 22050);
+          unlock.connect(ctx.destination);
+          unlock.start(0);
+        } catch (error) { /* ignore */ }
 
         let stream;
 
@@ -2478,15 +2509,14 @@
             audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true }
           });
         } catch (error) {
-          showToast(IOS
+          state.starting = false;
+          try { ctx.close(); } catch (closeError) { /* ignore */ }
+          notify(IOS
             ? 'Microphone blocked. In Safari tap aA › Website Settings and allow the microphone.'
             : 'Microphone blocked. Allow the microphone for this site in your browser settings.');
           updateMic();
           return;
         }
-
-        const AudioCtx = window.AudioContext || window.webkitAudioContext;
-        const ctx = new AudioCtx();
 
         try { await ctx.resume(); } catch (error) { /* ignore */ }
 
@@ -2495,7 +2525,21 @@
         const mute = ctx.createGain();
         mute.gain.value = 0;
 
-        const rec = { stream, ctx, source, processor, mute, chunks: [], rate: ctx.sampleRate, started: Date.now(), level: 0 };
+        // Cópia de segurança: o MediaRecorder grava por um caminho independente
+        let mr = null;
+        const mrChunks = [];
+
+        if (window.MediaRecorder) {
+          try {
+            mr = new MediaRecorder(stream);
+            mr.ondataavailable = event => { if (event.data && event.data.size) mrChunks.push(event.data); };
+            mr.start();
+          } catch (error) {
+            mr = null;
+          }
+        }
+
+        const rec = { stream, ctx, source, processor, mute, chunks: [], rate: ctx.sampleRate, started: Date.now(), level: 0, maxLevel: 0, mr, mrChunks };
 
         processor.onaudioprocess = event => {
           const data = event.inputBuffer.getChannelData(0);
@@ -2504,6 +2548,7 @@
           let sum = 0;
           for (let i = 0; i < data.length; i += 16) sum += data[i] * data[i];
           rec.level = Math.sqrt(sum / (data.length / 16));
+          rec.maxLevel = Math.max(rec.maxLevel, rec.level);
         };
 
         source.connect(processor);
@@ -2511,6 +2556,7 @@
         mute.connect(ctx.destination);
 
         state.rec = rec;
+        state.starting = false;
         state.draft = '';
         state.interim = '';
         updateMic();
@@ -2520,6 +2566,10 @@
           const seconds = Math.floor((Date.now() - rec.started) / 1000);
           $('v-meter-time').textContent = formatTime(seconds);
           $('v-meter-fill').style.width = Math.min(100, Math.round(rec.level * 400)) + '%';
+
+          if (seconds >= 3 && rec.maxLevel < 0.003) {
+            $('v-live').textContent = '⚠ No sound from the microphone yet. Is it muted or used by another app?';
+          }
 
           // Segurança: 2 minutos por gravação
           if (seconds >= 120) finishRecording(true);
@@ -2538,6 +2588,7 @@
         clearInterval(state.recTimer);
         showMeter(false);
 
+        try { if (rec.mr && rec.mr.state !== 'inactive') rec.mr.stop(); } catch (error) { /* ignore */ }
         try { rec.processor.disconnect(); rec.source.disconnect(); rec.mute.disconnect(); } catch (error) { /* ignore */ }
         rec.stream.getTracks().forEach(track => track.stop());
         try { await rec.ctx.close(); } catch (error) { /* ignore */ }
@@ -2558,19 +2609,53 @@
 
         state.rec = null;
         updateMic();
+
+        // Cópia de segurança: o que o MediaRecorder gravou
+        let backup = null;
+
+        if (send && rec.mr && rec.mr.state !== 'inactive') {
+          backup = await new Promise(resolve => {
+            rec.mr.onstop = () => resolve(rec.mrChunks.length
+              ? new Blob(rec.mrChunks, { type: rec.mr.mimeType || 'audio/mp4' })
+              : null);
+
+            try { rec.mr.stop(); } catch (error) { resolve(null); }
+          });
+        }
+
+        const seconds = (Date.now() - rec.started) / 1000;
+        let audio = null;
+
+        if (send && seconds >= 0.7) {
+          audio = encodeWav(rec.chunks, rec.rate);
+
+          // Se o caminho principal não apanhou som, usa a cópia de segurança
+          if (!audio && backup && backup.size > 800) {
+            try {
+              const decoded = await new Promise((resolve, reject) => {
+                backup.arrayBuffer()
+                  .then(buffer => rec.ctx.decodeAudioData(buffer, resolve, reject))
+                  .catch(reject);
+              });
+
+              audio = encodeWav([decoded.getChannelData(0)], decoded.sampleRate);
+            } catch (error) {
+              audio = null;
+            }
+          }
+        }
+
         await closeRecording(rec);
 
         if (!send) return;
 
-        if ((Date.now() - rec.started) < 700) {
-          showToast('Too short. Tap 🎙 and speak.');
+        if (seconds < 0.7) {
+          notify('Too short. Tap 🎙 and speak.');
           return;
         }
 
-        const audio = encodeWav(rec.chunks, rec.rate);
-
         if (!audio) {
-          showToast('I could not hear you. Check the microphone and speak a bit louder.');
+          notify('No sound was captured (' + seconds.toFixed(1) + ' s). Check that the microphone is not muted or used by another app, then try again.');
           return;
         }
 
@@ -2591,6 +2676,7 @@
         let peak = 0;
         for (let i = 0; i < merged.length; i += 8) peak = Math.max(peak, Math.abs(merged[i]));
         if (peak < 0.004) return null;
+        const gain = peak < 0.5 ? Math.min(20, 0.9 / peak) : 1;
 
         const targetRate = 16000;
         const ratio = inputRate / targetRate;
@@ -2602,7 +2688,7 @@
           const end = Math.min(merged.length, Math.floor((i + 1) * ratio));
           let sum = 0;
           for (let j = start; j < end; j++) sum += merged[j];
-          const value = Math.max(-1, Math.min(1, sum / Math.max(1, end - start)));
+          const value = Math.max(-1, Math.min(1, gain * sum / Math.max(1, end - start)));
           pcm[i] = value < 0 ? value * 0x8000 : value * 0x7FFF;
         }
 
