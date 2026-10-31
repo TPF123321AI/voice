@@ -1075,6 +1075,19 @@
     .mode-tab { flex: 1; padding: 10px 12px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); color: var(--text-soft); font-weight: 700; }
     .mode-tab.active { background: rgba(var(--v-rgb), .14); border-color: rgba(var(--v-rgb), .45); color: rgb(var(--v-rgb)); }
     .mode-tab span { margin-left: 6px; padding: 1px 8px; border-radius: 99px; background: rgba(var(--v-rgb), .18); font-size: 12px; }
+
+    /* ---------- Practice e menu em duas linhas ---------- */
+    body[data-view="practice"] { --v-rgb: 244, 63, 94; }
+    .nav-button[data-view="practice"] { --nav-c: 244, 63, 94; }
+    .build-line { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; min-height: 58px; padding: 10px; margin-bottom: 12px; border: 2px dashed rgba(var(--v-rgb), .4); border-radius: 14px; }
+    .chip-word { margin: 3px; padding: 8px 13px; border: 1px solid var(--border); border-radius: 999px; background: var(--surface); color: var(--text); font-size: 15px; font-weight: 600; box-shadow: var(--shadow); }
+    .chip-word.used { opacity: .25; pointer-events: none; }
+
+    @media (max-width: 850px) {
+      .sidebar { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 4px; }
+      .nav-button { padding: 8px 0; font-size: 10px; letter-spacing: -.2px; }
+      .nav-icon { font-size: 17px; }
+    }
     </style>
 </head>
 
@@ -1126,6 +1139,11 @@
 
 
           <div id="voice-app">
+            <div class="mode-tabs" id="v-modes">
+              <button class="mode-tab active" id="v-tab-talk">🎙 Conversation</button>
+              <button class="mode-tab" id="v-tab-pron">👄 Pronunciation</button>
+            </div>
+
             <div class="card" id="v-start">
               <h4 class="content-title">Start a conversation</h4>
               <p class="hint">
@@ -1189,6 +1207,7 @@
             </div>
 
             <div class="card hidden" id="v-summary"></div>
+            <div class="card hidden" id="v-pron"></div>
           </div>
         </section>
 
@@ -1456,8 +1475,8 @@
       else if (/^en-(AU|IE|US|ZA|IN)/i.test(lang)) score += 10;
 
       // Vozes fixas preferidas: Martha (iPhone) e Google UK English Female (Chrome/Android)
-      if (/^martha/i.test(name)) score += 200;
-      else if (/google uk english female/i.test(name)) score += 190;
+      if (/google uk english female/i.test(name)) score += 300;
+      else if (/^martha/i.test(name)) score += 200;
 
       if (FEMALE_VOICE.test(name)) score += 60;
       if (MALE_VOICE.test(name)) score -= 100;
@@ -1613,7 +1632,9 @@
         sayTarget: null,
         sayAttempts: 0,
         sayBox: null,
-        sessionKey: ''
+        sessionKey: '',
+        pronTarget: null,
+        inChat: false
       };
 
       /* ---- arranque ---- */
@@ -1642,6 +1663,8 @@
           else finishListening(false);
         });
         $('v-opt-fix').addEventListener('change', applyFixToggle);
+        $('v-tab-talk').addEventListener('click', () => setMode('talk'));
+        $('v-tab-pron').addEventListener('click', () => setMode('pron'));
 
         $('v-btn-fixes').addEventListener('click', () => {
           renderFixPanel();
@@ -1663,7 +1686,7 @@
         });
 
         // No telemóvel a IA ouve e transcreve a gravação: sem limite de silêncio
-        $('v-opt-ai').checked = supportsRecording();
+        $('v-opt-ai').checked = MOBILE && supportsRecording();
         $('v-opt-ai').addEventListener('change', applyEngine);
         applyEngine();
 
@@ -1692,7 +1715,7 @@
       }
 
       function showPanel(id) {
-        ['v-start', 'v-chat', 'v-summary'].forEach(name => {
+        ['v-start', 'v-chat', 'v-summary', 'v-pron'].forEach(name => {
           $(name).classList.toggle('hidden', name !== id);
         });
       }
@@ -1755,6 +1778,7 @@
 
         applyFixToggle();
         unlockSpeech();
+        state.inChat = true;
         showPanel('v-chat');
 
         clearInterval(state.timer);
@@ -2027,7 +2051,7 @@
 
               pause = $('v-opt-pause').checked;
               if (userWrap) addTranslation(userWrap, data.translation, pause);
-            } else if (data.correction) {
+            } else if (data.correction && !sameSentence(userText, data.correction.better)) {
               state.fixes.push({
                 said: userText,
                 better: data.correction.better,
@@ -2159,6 +2183,8 @@
           mic.textContent = '🎙';
           label.textContent = SR ? 'Tap the microphone to speak' : 'Speech recognition unavailable: type below';
         }
+
+        updatePronMic();
       }
 
       function collectDraft() {
@@ -2408,7 +2434,8 @@
         resetListening();
 
         if (send && text) {
-          if (state.sayTarget) handleSayItText(text);
+          if (state.pronTarget) handlePronText(text);
+          else if (state.sayTarget) handleSayItText(text);
           else sendUser(text, pt);
         } else if (send) {
           showToast('Nothing was captured. Tap 🎙 and try again.');
@@ -2477,7 +2504,7 @@
 
       function applyEngine() {
         // Com a IA a ouvir, o português é detetado sozinho: o botão PT não faz falta
-        $('v-btn-pt').style.display = useAiListening() ? 'none' : '';
+        $('v-btn-pt').style.display = 'none';
       }
 
       async function startRecording() {
@@ -2659,7 +2686,8 @@
           return;
         }
 
-        if (state.sayTarget) handleSayItAudio(audio);
+        if (state.pronTarget) handlePronAudio(audio);
+        else if (state.sayTarget) handleSayItAudio(audio);
         else sendAudio(audio);
       }
 
@@ -2820,7 +2848,7 @@
         } catch (e) { /* ignore */ }
       }
 
-      function speak(text) {
+      function speak(text, rate) {
         return new Promise(resolve => {
           if (!('speechSynthesis' in window) || !$('v-opt-voice').checked || !text) {
             resolve();
@@ -2833,7 +2861,7 @@
           const utterance = new SpeechSynthesisUtterance(String(text));
           const choice = chooseVoice($('v-voice-select').value || lsGet('ed-voice-name'));
           utterance.lang = choice.voice ? choice.voice.lang : 'en-GB';
-          utterance.rate = Number($('v-opt-rate').value) || 0.95;
+          utterance.rate = rate || Number($('v-opt-rate').value) || 0.95;
           utterance.pitch = choice.pitch;
           if (choice.voice) utterance.voice = choice.voice;
 
@@ -2920,6 +2948,198 @@
         }
       }
 
+
+      /* ---- pronúncia: repetir frases e a IA compara ---- */
+
+      const FILLERS = ['so', 'well', 'and', 'but', 'okay', 'ok', 'then', 'um', 'uh', 'like', 'right', 'now'];
+
+      function sameSentence(a, b) {
+        const clean = text => {
+          const list = words(text);
+          while (list.length && FILLERS.indexOf(list[0]) !== -1) list.shift();
+          return list.join(' ');
+        };
+
+        const x = clean(a);
+        return !!x && x === clean(b);
+      }
+
+      const PRON = [
+        ['Thank you for the thorough report.', 'th: põe a língua entre os dentes (thank, thorough). Não é "t" nem "f".'],
+        ['I think this is the third thing.', 'th surdo (think, third, thing). Sopra o ar entre a língua e os dentes.'],
+        ['Together we can make this better.', 'th sonoro (together, this, better): igual, mas com a voz a vibrar.'],
+        ['The weather is rather cold this month.', 'weather, rather: th sonoro. month: th surdo no fim.'],
+        ['Did you see him leave the ship?', 'ship (i curto) ≠ sheep (i longo). Compara leave com ship.'],
+        ['Please sit in the seat near the window.', 'sit (curto) vs seat (longo): o "ee" de seat é mais comprido.'],
+        ['She worked, talked and walked for hours.', '-ed termina em /t/ depois de sons surdos: worked, talked, walked.'],
+        ['We wanted to finish and decided to publish it.', '-ed soa /id/ depois de t e d: wanted, decided.'],
+        ['He hired a helpful assistant at the hotel.', 'h aspirado: sai ar da garganta (hired, helpful, hotel).'],
+        ['The red car arrived right around three.', 'r inglês: a língua não toca no céu da boca.'],
+        ['We will very much value your work.', 'w = lábios arredondados; v = dentes de cima no lábio de baixo.'],
+        ['The photographer introduced the important topic.', 'Acentuação: phoTOgrapher, inTROduced, imPORtant.'],
+        ['I would like to reserve a table for tomorrow evening.', 'reserve: acento no segundo som (reSERVE). would: o l não se pronuncia.'],
+        ['Could you tell me where the nearest station is?', 'could: o l não se diz. nearest: "ni-rist".'],
+        ['We are launching a new campaign on Monday morning.', 'campaign: o g é mudo ("câm-pein"). Monday: "mân-dei".'],
+        ['She has been working there for about three years.', 'Liga as palavras: "has-been-working". three: th surdo.'],
+        ['What time does the match start on Saturday?', 'Saturday: "sá-tur-dei". match: ch como em "tch".'],
+        ['I\'m really looking forward to the weekend.', 'looking forward: "lu-king fór-uârd". weekend: acento em WEEKend.'],
+        ['The results were much better than expected.', 'results: acento em reSULTS. much: "mâtch".'],
+        ['Can you send me the schedule for next week?', 'schedule: "ské-dju-l" (britânico). week: w + i longo.'],
+        ['He thought that the weather would be better.', 'thought: "thôt" (th surdo, gh mudo). would: "wud".'],
+        ['They usually have breakfast at seven thirty.', 'usually: "iu-jua-li". breakfast: "brék-fest". thirty: th surdo.'],
+        ['Would you like some water or a cup of tea?', 'water: "uó-ter" (britânico). cup: "câp". tea: i longo.'],
+        ['The statistics show a significant improvement.', 'statistics: acento em staTIStics. significant: sigNIficant.'],
+        ['I\'d like to thank everyone for their feedback.', 'thank, their: dois th diferentes. feedback: i longo.'],
+        ['The journalist asked three difficult questions.', 'journalist: "jâr-na-list". asked: "ásct". questions: "kuês-tchens".'],
+        ['I bought a bottle of water and a sandwich.', 'bought: "bôt". sandwich: "sân-uidj" (o w é mudo).'],
+        ['Please speak a little more slowly.', 'slowly: o l duplo e o w final. little: o t britânico.'],
+        ['My colleague works in the sports department.', 'colleague: "kó-lig". department: acento em deParTment.'],
+        ['Fifty-three thousand people attended the final.', 'thousand: th surdo + "áu". attended: acento em atTENded.'],
+        ['He wore a very warm jacket in the winter.', 'wore: "uór". warm: "uórm". winter: w + i curto.'],
+        ['She sells seashells by the seashore.', 'Trava-línguas: s vs sh (sells, seashells). Devagar primeiro.']
+      ];
+
+      const pron = { items: [], index: 0, attempts: 0, passed: 0 };
+      const shuffleLocal = list => list.slice().sort(() => Math.random() - 0.5);
+
+      function setMode(mode) {
+        $('v-tab-talk').classList.toggle('active', mode === 'talk');
+        $('v-tab-pron').classList.toggle('active', mode === 'pron');
+
+        if (state.rec) cancelRecording();
+        stopListening();
+        stopSpeaking();
+        state.pronTarget = null;
+
+        if (mode === 'pron') {
+          renderPronHome();
+          showPanel('v-pron');
+        } else {
+          showPanel(state.inChat ? 'v-chat' : 'v-start');
+        }
+      }
+
+      function renderPronHome() {
+        $('v-pron').innerHTML =
+          '<h4 class="content-title">Pronunciation practice</h4>' +
+          '<p class="hint">Ouves a frase, repetes em voz alta e a IA compara com o texto e diz-te o que corrigir. São 6 frases, com 3 tentativas em cada.</p>' +
+          '<button class="button" id="v-pron-start">Start (6 sentences)</button>';
+
+        $('v-pron-start').addEventListener('click', () => {
+          pron.items = shuffleLocal(PRON).slice(0, 6);
+          pron.index = 0;
+          pron.passed = 0;
+          unlockSpeech();
+          renderPron();
+        });
+      }
+
+      function renderPron() {
+        const item = pron.items[pron.index];
+        pron.attempts = 0;
+        state.pronTarget = null;
+
+        $('v-pron').innerHTML =
+          '<div class="progress-row"><span>Sentence ' + (pron.index + 1) + ' / ' + pron.items.length + '</span><span class="tag">Pronunciation</span></div>' +
+          '<div class="progress-track"><div class="progress-fill" style="width:' + Math.round(pron.index / pron.items.length * 100) + '%"></div></div>' +
+          '<h4 class="diag-q">' + escapeHtml(item[0]) + '</h4>' +
+          '<p class="hint" style="margin:-6px 0 14px">' + escapeHtml(item[1]) + '</p>' +
+          '<div class="conversation-actions" style="margin-top:0">' +
+          '<button class="button secondary" id="v-pron-listen">🔊 Listen</button>' +
+          '<button class="button secondary" id="v-pron-slow">🐢 Slowly</button>' +
+          '<button class="button" id="v-pron-mic">🎙 Record</button></div>' +
+          '<div class="feedback" id="v-pron-result"></div>' +
+          '<div class="conversation-actions"><button class="button success" id="v-pron-next" style="display:none">Next</button>' +
+          '<button class="button secondary" id="v-pron-quit">Quit</button></div>';
+
+        $('v-pron-listen').addEventListener('click', () => speak(item[0]));
+        $('v-pron-slow').addEventListener('click', () => speak(item[0], 0.6));
+        $('v-pron-quit').addEventListener('click', () => { stopListening(); state.pronTarget = null; renderPronHome(); });
+        $('v-pron-next').addEventListener('click', () => {
+          if (pron.index >= pron.items.length - 1) finishPron();
+          else { pron.index++; renderPron(); }
+        });
+
+        $('v-pron-mic').addEventListener('click', () => {
+          if (state.rec) { finishRecording(true); return; }
+          if (state.wantListening) { finishListening(true); return; }
+          if (state.starting) return;
+
+          state.pronTarget = item[0];
+          showPron('Listening... say the sentence, then tap Send.', null);
+          startListening(false);
+        });
+
+        setTimeout(() => speak(item[0]), 300);
+      }
+
+      function updatePronMic() {
+        const button = $('v-pron-mic');
+        if (button) button.textContent = (state.rec || state.wantListening) ? '➤ Send' : '🎙 Record';
+      }
+
+      function showPron(text, ok) {
+        const box = $('v-pron-result');
+        if (!box) return;
+
+        box.className = 'feedback show' + (ok === true ? ' good' : ok === false ? ' bad' : '');
+        box.textContent = text;
+      }
+
+      async function handlePronAudio(audio) {
+        const target = state.pronTarget;
+        showPron('Checking...', null);
+
+        try {
+          const result = await apiPost('voiceSayIt', { audio: audio.data, mime: audio.mime, target });
+          evaluatePron(result);
+        } catch (error) {
+          showPron('Could not check: ' + error.message + ' Tap Record to try again.', false);
+        }
+      }
+
+      function handlePronText(text) {
+        evaluatePron({ transcript: text, match: similarity10(text, state.pronTarget), feedback: '' });
+      }
+
+      function evaluatePron(result) {
+        pron.attempts++;
+
+        const passed = result.match >= 7;
+        const heard = result.transcript ? 'I heard: “' + result.transcript + '”. ' : '';
+
+        if (passed) {
+          pron.passed++;
+          state.pronTarget = null;
+          showPron('✓ ' + (result.feedback || 'Well said!') + ' (' + result.match + '/10)', true);
+          $('v-pron-next').style.display = 'inline-flex';
+          return;
+        }
+
+        if (pron.attempts >= 3) {
+          state.pronTarget = null;
+          showPron(heard + (result.feedback || '') + ' Let’s move on.', false);
+          $('v-pron-next').style.display = 'inline-flex';
+          return;
+        }
+
+        showPron(heard + (result.feedback || 'Almost.') + ' Try again (' + pron.attempts + '/3).', false);
+      }
+
+      function finishPron() {
+        state.pronTarget = null;
+
+        apiPost('savePractice', { summary: { label: 'Pronunciation', correct: pron.passed, total: pron.items.length } }).catch(() => {});
+
+        $('v-pron').innerHTML =
+          '<p class="eyebrow">Result</p>' +
+          '<h3 style="margin:0 0 6px;font-size:32px">' + pron.passed + ' / ' + pron.items.length + ' well said</h3>' +
+          '<p class="hint">Repete as que falharam amanhã: a pronúncia melhora com repetição curta e frequente.</p>' +
+          '<div class="conversation-actions"><button class="button" id="v-pron-again">New set</button></div>';
+
+        $('v-pron-again').addEventListener('click', renderPronHome);
+      }
+
       /* ---- fim e nível ---- */
 
       function levelLabel(score) {
@@ -2947,6 +3167,7 @@
           return;
         }
 
+        state.inChat = false;
         showPanel('v-summary');
         await requestSummary();
       }
