@@ -6,6 +6,7 @@
   <meta name="robots" content="noindex, nofollow">
   <title>Voice Practice</title>
 
+
   <style>
     :root {
       --bg: #f5f6f8;
@@ -44,6 +45,7 @@
       --shadow: 0 6px 24px rgba(27, 36, 60, .055);
     }
 
+
     :root[data-theme="dark"] {
       --bg: #12141a;
       --surface: #1b1e27;
@@ -80,7 +82,9 @@
       --shadow: 0 6px 24px rgba(0, 0, 0, .35);
     }
 
+
     * { box-sizing: border-box; }
+
 
     body {
       margin: 0;
@@ -93,15 +97,18 @@
       transition: background .2s, color .2s;
     }
 
+
     button, textarea, input, select { font: inherit; }
     button { cursor: pointer; }
     button:disabled { cursor: not-allowed; opacity: .6; }
+
 
     .app {
       max-width: 1240px;
       margin: 0 auto;
       padding: 28px 24px 60px;
     }
+
 
     .topbar {
       display: flex;
@@ -111,7 +118,9 @@
       margin-bottom: 28px;
     }
 
+
     .brand { display: flex; align-items: center; gap: 12px; }
+
 
     .brand-icon {
       display: grid;
@@ -125,10 +134,13 @@
       font-weight: 800;
     }
 
+
     .brand h1 { margin: 0; font-size: 21px; letter-spacing: -.6px; }
     .brand p { margin: 1px 0 0; color: var(--muted); font-size: 12px; }
 
+
     .top-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+
 
     .pill {
       padding: 8px 13px;
@@ -141,8 +153,10 @@
       white-space: nowrap;
     }
 
+
     .pill.streak { color: #d9622b; }
     .pill.goal-reached { color: var(--green); border-color: var(--green-border); }
+
 
     .theme-toggle {
       display: grid;
@@ -156,7 +170,9 @@
       font-size: 16px;
     }
 
+
     .welcome { margin-bottom: 22px; }
+
 
     .eyebrow {
       margin: 0 0 8px;
@@ -167,6 +183,7 @@
       text-transform: uppercase;
     }
 
+
     .welcome h2 {
       margin: 0;
       font-size: clamp(27px, 4vw, 38px);
@@ -174,7 +191,9 @@
       line-height: 1.15;
     }
 
+
     .welcome p { max-width: 640px; margin: 12px 0 0; color: var(--muted); }
+
 
     .today-grid {
       display: grid;
@@ -182,6 +201,7 @@
       gap: 14px;
       margin-bottom: 22px;
     }
+
 
     .today-card {
       padding: 20px;
@@ -191,8 +211,10 @@
       box-shadow: var(--shadow);
     }
 
+
     .today-card h4 { margin: 0 0 4px; font-size: 17px; letter-spacing: -.3px; }
     .today-card p { margin: 0 0 14px; color: var(--muted); font-size: 13px; }
+
 
     .stats {
       display: grid;
@@ -200,6 +222,7 @@
       gap: 14px;
       margin-bottom: 30px;
     }
+
 
     .stat-card {
       padding: 20px;
@@ -209,9 +232,11 @@
       box-shadow: var(--shadow);
     }
 
+
     .stat-label { color: var(--muted); font-size: 12px; font-weight: 600; }
     .stat-value { margin-top: 8px; font-size: 30px; font-weight: 800; letter-spacing: -1px; }
     .stat-foot { margin-top: 2px; color: var(--muted); font-size: 11px; }
+
 
     .layout {
       display: grid;
@@ -219,6 +244,7 @@
       align-items: start;
       gap: 24px;
     }
+
 
     .sidebar {
       position: sticky;
@@ -229,6 +255,7 @@
       border-radius: var(--radius);
     }
 
+
     .nav-label {
       padding: 10px 12px 8px;
       color: var(--muted);
@@ -237,6 +264,7 @@
       letter-spacing: 1.3px;
       text-transform: uppercase;
     }
+
 
     .nav-button {
       display: flex;
@@ -254,19 +282,24 @@
       transition: background .18s, color .18s;
     }
 
+
     .nav-button:hover { background: var(--hover); }
     .nav-button.active { background: var(--primary-light); color: var(--primary); }
     .nav-icon { width: 22px; text-align: center; font-size: 17px; }
 
+
     .main { min-width: 0; }
+
 
     .view { display: none; }
     .view.active { display: block; animation: appear .22s ease; }
+
 
     @keyframes appear {
       from { opacity: 0; transform: translateY(5px); }
       to { opacity: 1; transform: translateY(0); }
     }
+
 
     .section-heading {
       display: flex;
@@ -276,8 +309,10 @@
       margin-bottom: 20px;
     }
 
+
     .section-heading h3 { margin: 0; font-size: 22px; letter-spacing: -.5px; }
     .section-heading p { margin: 5px 0 0; color: var(--muted); font-size: 13px; }
+
 
     .card {
       min-width: 0;
@@ -288,13 +323,16 @@
       box-shadow: var(--shadow);
     }
 
+
     .card + .card { margin-top: 16px; }
+
 
     .lesson-list {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 14px;
     }
+
 
     .lesson-card {
       display: flex;
@@ -307,11 +345,13 @@
       transition: transform .18s, border-color .18s, box-shadow .18s;
     }
 
+
     .lesson-card:hover {
       transform: translateY(-2px);
       border-color: var(--primary-border);
       box-shadow: var(--shadow);
     }
+
 
     .lesson-top {
       display: flex;
@@ -320,6 +360,7 @@
       gap: 10px;
       margin-bottom: 15px;
     }
+
 
     .lesson-number {
       display: grid;
@@ -332,6 +373,7 @@
       font-size: 12px;
       font-weight: 800;
     }
+
 
     .tag {
       display: inline-flex;
@@ -346,11 +388,14 @@
       letter-spacing: .4px;
     }
 
+
     .tag.done { background: var(--green-light); color: var(--green); }
     .tag.ai { background: var(--primary-light); color: var(--primary); }
 
+
     .lesson-card h4 { margin: 0; font-size: 17px; letter-spacing: -.3px; }
     .lesson-card p { flex: 1; margin: 7px 0 18px; color: var(--muted); font-size: 12px; }
+
 
     .button {
       display: inline-flex;
@@ -369,6 +414,7 @@
       transition: background .15s, transform .15s;
     }
 
+
     .diag-q { margin: 22px 0 16px; font-size: 18px; line-height: 1.5; letter-spacing: -.2px; }
     .diag-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 14px; font-size: 13px; }
     .diag-row span { color: var(--text-soft); }
@@ -376,17 +422,21 @@
     .button:hover:not(:disabled) { background: var(--primary-hover); }
     .button:active:not(:disabled) { transform: scale(.985); }
 
+
     .button.secondary {
       background: var(--surface);
       border-color: var(--border);
       color: var(--text);
     }
 
+
     .button.secondary:hover:not(:disabled) { background: var(--hover); }
     .button.small { min-height: 35px; padding: 7px 11px; font-size: 12px; }
     .button.full { width: 100%; }
 
+
     .back-button { margin-bottom: 17px; }
+
 
     .lesson-hero {
       margin-bottom: 16px;
@@ -396,13 +446,17 @@
       border-radius: var(--radius);
     }
 
+
     .lesson-hero h3 { margin: 9px 0; font-size: clamp(24px, 4vw, 32px); letter-spacing: -.9px; }
     .lesson-hero p { margin: 0; color: var(--text-soft); font-size: 14px; }
+
 
     .content-title { margin: 0 0 16px; font-size: 17px; }
     .hint { margin: -7px 0 16px; color: var(--muted); font-size: 12px; }
 
+
     .dialogue { display: grid; gap: 12px; }
+
 
     .dialogue-line {
       display: grid;
@@ -410,6 +464,7 @@
       gap: 12px;
       align-items: start;
     }
+
 
     .speaker {
       display: grid;
@@ -423,13 +478,16 @@
       font-weight: 800;
     }
 
+
     .dialogue-text { padding: 12px 14px; background: var(--surface-2); border-radius: 12px; }
     .dialogue-text strong { display: block; margin-bottom: 3px; font-size: 11px; }
     .dialogue-text p { margin: 0; font-size: 14px; }
 
+
     .exercise { padding: 20px 0; border-bottom: 1px solid var(--border); }
     .exercise:last-child { padding-bottom: 0; border-bottom: 0; }
     .exercise:first-child { padding-top: 0; }
+
 
     .exercise-label {
       margin-bottom: 9px;
@@ -440,9 +498,12 @@
       text-transform: uppercase;
     }
 
+
     .exercise h4 { margin: 0 0 15px; font-size: 15px; line-height: 1.5; }
 
+
     .options { display: grid; gap: 9px; }
+
 
     .option {
       display: flex;
@@ -459,9 +520,11 @@
       transition: border-color .15s, background .15s;
     }
 
+
     .option:hover:not(:disabled) { border-color: var(--primary-border); background: var(--hover); }
     .option.correct { border-color: var(--green-border); background: var(--green-light); color: var(--green-text); opacity: 1; }
     .option.incorrect { border-color: var(--red-border); background: var(--red-light); color: var(--red); opacity: 1; }
+
 
     .option-letter {
       display: grid;
@@ -476,6 +539,7 @@
       font-weight: 800;
     }
 
+
     .feedback {
       display: none;
       margin-top: 12px;
@@ -484,9 +548,11 @@
       font-size: 12px;
     }
 
+
     .feedback.show { display: block; }
     .feedback.good { background: var(--green-light); color: var(--green-text); }
     .feedback.bad { background: var(--red-light); color: var(--red-text); }
+
 
     .textarea {
       display: block;
@@ -503,8 +569,10 @@
       line-height: 1.6;
     }
 
+
     .textarea:focus { border-color: var(--primary-border); box-shadow: 0 0 0 3px rgba(54, 92, 245, .1); }
     .textarea::placeholder { color: var(--muted); opacity: .7; }
+
 
     .select, .input {
       width: 100%;
@@ -517,38 +585,49 @@
       outline: none;
     }
 
+
     .select:focus, .input:focus { border-color: var(--primary-border); }
+
 
     .form-row { display: grid; gap: 12px; margin-bottom: 14px; }
     .form-row.two { grid-template-columns: minmax(0, 1fr) 120px; }
     .field-label { display: block; margin-bottom: 6px; color: var(--muted); font-size: 12px; font-weight: 600; }
 
+
     .conversation-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+
 
     .model-answer { display: none; margin-top: 15px; padding: 16px; background: var(--surface-2); border-radius: 12px; }
     .model-answer.show { display: block; }
     .model-answer strong { display: block; margin-bottom: 6px; font-size: 12px; }
     .model-answer p { margin: 0; font-size: 13px; }
 
+
     .ai-box { margin-top: 14px; padding: 16px; background: var(--surface-2); border: 1px solid var(--border); border-radius: 12px; }
     .ai-box h5 { margin: 0 0 6px; color: var(--primary); font-size: 10px; letter-spacing: 1px; text-transform: uppercase; }
     .ai-box p { margin: 0 0 14px; font-size: 14px; }
     .ai-box p:last-child { margin-bottom: 0; }
+
 
     .mistake { padding: 10px 12px; margin-bottom: 8px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; font-size: 13px; }
     .mistake .from { color: var(--red); text-decoration: line-through; }
     .mistake .to { color: var(--green); font-weight: 700; }
     .mistake .why { display: block; margin-top: 4px; color: var(--muted); font-size: 12px; }
 
+
     .info-box { margin-bottom: 16px; padding: 14px 16px; background: var(--primary-light); color: var(--text); border-radius: 12px; font-size: 13px; }
+
 
     .vocab-list, .review-list { display: grid; gap: 12px; }
 
+
     .vocab-item, .review-item { padding: 17px; border: 1px solid var(--border); border-radius: 14px; }
+
 
     .vocab-item-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
     .vocab-item h4, .review-item h4 { margin: 0; font-size: 15px; }
     .vocab-item p, .review-item p { margin: 5px 0 0; color: var(--muted); font-size: 12px; }
+
 
     .example {
       margin-top: 11px !important;
@@ -558,6 +637,7 @@
       color: var(--text-soft) !important;
       font-style: italic;
     }
+
 
     .speak-button {
       display: grid;
@@ -571,18 +651,23 @@
       font-size: 16px;
     }
 
+
     .speak-button:hover { background: var(--primary-light); }
+
 
     .review-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
     .review-actions .button { flex: 1; }
+
 
     .empty-state { padding: 35px 20px; color: var(--muted); text-align: center; }
     .empty-icon { margin-bottom: 10px; font-size: 30px; }
     .empty-state h4 { margin: 0 0 6px; color: var(--text); font-size: 16px; }
     .empty-state p { margin: 0; font-size: 13px; }
 
+
     .progress-track { height: 8px; overflow: hidden; margin-top: 12px; background: var(--track); border-radius: 99px; }
     .progress-fill { height: 100%; width: 0; background: var(--primary); border-radius: 99px; transition: width .3s ease; }
+
 
     .progress-row {
       display: flex;
@@ -593,6 +678,7 @@
       font-size: 12px;
     }
 
+
     .chart-area { position: relative; display: flex; align-items: stretch; gap: 10px; height: 150px; margin-top: 8px; }
     .bar-wrap { position: relative; flex: 1; }
     .bar { position: absolute; left: 50%; bottom: 0; width: 100%; max-width: 38px; transform: translateX(-50%); min-height: 3px; background: var(--primary); border-radius: 8px 8px 4px 4px; opacity: .85; }
@@ -602,6 +688,7 @@
     .goal-line span { position: absolute; right: 0; top: -17px; color: var(--muted); font-size: 10px; }
     .chart-labels { display: flex; gap: 10px; margin-top: 8px; }
     .chart-labels span { flex: 1; color: var(--muted); font-size: 11px; text-align: center; }
+
 
     .toast {
       position: fixed;
@@ -621,9 +708,12 @@
       transition: opacity .2s, transform .2s;
     }
 
+
     .toast.show { transform: translateY(0); opacity: 1; }
 
+
     .loading { display: flex; align-items: center; justify-content: center; min-height: 160px; gap: 12px; color: var(--muted); font-size: 13px; }
+
 
     .spinner {
       width: 20px;
@@ -634,9 +724,12 @@
       animation: spin .7s linear infinite;
     }
 
+
     @keyframes spin { to { transform: rotate(360deg); } }
 
+
     .error-box { margin: 14px 0; padding: 16px; background: var(--red-light); color: var(--red-text); border-radius: 12px; font-size: 13px; }
+
 
     .search-input {
       width: 100%;
@@ -650,17 +743,22 @@
       outline: none;
     }
 
+
     .search-input:focus { border-color: var(--primary-border); }
 
+
     .footer { margin-top: 30px; color: var(--muted); font-size: 11px; text-align: center; }
+
 
     @media (max-width: 850px) {
       .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .today-grid { grid-template-columns: 1fr; }
       .layout { grid-template-columns: 1fr; }
 
+
       .sidebar { position: static; display: flex; gap: 5px; overflow-x: auto; padding: 8px; }
       .nav-label { display: none; }
+
 
       .nav-button {
         justify-content: center;
@@ -672,8 +770,10 @@
         white-space: nowrap;
       }
 
+
       .nav-icon { width: auto; }
     }
+
 
     @media (max-width: 560px) {
       .app { padding: 18px 14px 40px; }
@@ -699,7 +799,9 @@
     /* ---------- Voice tab ---------- */
     .hidden { display: none !important; }
 
+
     .v-toolbar { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+
 
     .v-chip {
       display: inline-flex;
@@ -716,23 +818,29 @@
       cursor: pointer;
     }
 
+
     .v-chip input { margin: 0; accent-color: var(--primary); }
     .v-chip select { width: auto; min-height: 0; padding: 0; border: 0; background: transparent; color: var(--text); font-size: 12px; outline: none; }
     .v-timer { margin-left: auto; font-variant-numeric: tabular-nums; cursor: default; }
     .v-title { margin: 0 0 8px; color: var(--muted); font-size: 12px; }
 
+
     .v-log { min-height: 220px; max-height: 52vh; overflow-y: auto; padding: 4px 2px 12px; scroll-behavior: smooth; }
+
 
     .v-msg { display: flex; flex-direction: column; margin: 10px 0; max-width: 88%; }
     .v-msg.ai { align-items: flex-start; }
     .v-msg.user { align-items: flex-end; margin-left: auto; }
 
+
     .v-bubble { padding: 11px 14px; border-radius: 18px; font-size: 15px; white-space: pre-wrap; overflow-wrap: anywhere; }
     .v-msg.ai .v-bubble { background: var(--surface); border: 1px solid var(--border); border-bottom-left-radius: 6px; }
     .v-msg.user .v-bubble { background: var(--user-bubble); color: var(--user-text); border-bottom-right-radius: 6px; }
 
+
     .v-tools { display: flex; gap: 6px; margin-top: 4px; }
     .v-link { padding: 2px 6px; border: 0; background: transparent; color: var(--muted); font-size: 12px; }
+
 
     .v-fix {
       margin-top: 6px;
@@ -744,21 +852,27 @@
       font-size: 14px;
     }
 
+
     .v-fix strong { color: var(--text); }
     .v-trans { border-left-color: var(--primary); background: var(--primary-light); color: var(--text-soft); }
     .v-log.hide-fix .v-fix:not(.v-trans) { display: none; }
     .v-fix-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
 
+
     .v-typing .v-bubble { color: var(--muted); letter-spacing: 2px; }
 
+
     .v-live { min-height: 22px; margin-bottom: 8px; color: var(--muted); font-size: 14px; font-style: italic; text-align: center; }
+
 
     .v-hint { margin-bottom: 10px; padding: 12px 14px; border-radius: 14px; background: var(--primary-light); font-size: 14px; }
     .v-hint-line { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 5px 0; }
 
+
     .v-controls { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; margin-top: 6px; }
     .v-controls .left { justify-self: start; }
     .v-controls .right { justify-self: end; }
+
 
     .v-mic {
       display: grid;
@@ -774,9 +888,11 @@
       transition: transform .15s;
     }
 
+
     .v-mic:active:not(:disabled) { transform: scale(.95); }
     .v-mic.listening { background: var(--red); color: #fff; animation: v-pulse 1.2s infinite; }
     .v-mic.busy { background: var(--muted); box-shadow: none; }
+
 
     @keyframes v-pulse {
       0% { box-shadow: 0 0 0 0 rgba(194, 59, 69, .5); }
@@ -784,13 +900,17 @@
       100% { box-shadow: 0 0 0 0 rgba(194, 59, 69, 0); }
     }
 
+
     .v-mic-label { margin: 8px 0 12px; color: var(--muted); font-size: 12px; text-align: center; }
+
 
     .v-type-row { display: flex; gap: 8px; margin-top: 12px; }
     .v-type-row .input { flex: 1; }
 
+
     .v-end { margin-top: 16px; width: 100%; background: var(--red-light); color: var(--red-text); border-color: var(--red-border); }
     .v-end:hover:not(:disabled) { background: var(--red-light); filter: brightness(.96); }
+
 
     .v-score { font-size: 54px; font-weight: 800; letter-spacing: -2px; line-height: 1; }
     .v-score small { font-size: 22px; color: var(--muted); font-weight: 700; letter-spacing: 0; }
@@ -804,6 +924,7 @@
     .v-phrase .head { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-weight: 700; }
     .v-phrase .meaning, .v-phrase .example { display: block; margin-top: 3px; color: var(--muted); font-size: 12px; }
 
+
     .v-meter { display: flex; align-items: center; gap: 10px; margin: 0 0 8px; color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; }
     .v-meter-bar { flex: 1; height: 8px; overflow: hidden; border-radius: 99px; background: var(--track); }
     .v-meter-bar i { display: block; height: 100%; width: 0; border-radius: 99px; background: var(--red); transition: width .12s; }
@@ -811,9 +932,11 @@
     .v-say-result.ok { background: var(--green-light); color: var(--green-text); }
     .v-say-result.bad { background: var(--red-light); color: var(--red-text); }
 
+
     @media (max-width: 560px) {
       .v-subs { grid-template-columns: 1fr; }
     }
+
 
 /* ---------- Light refresh ---------- */
     :root {
@@ -837,6 +960,7 @@
       --shadow: 0 4px 18px rgba(46, 70, 130, .07);
     }
 
+
     :root[data-theme="dark"] {
       --bg: #1c2233;
       --surface: #252d43;
@@ -858,9 +982,11 @@
       --shadow: 0 4px 18px rgba(0, 0, 0, .25);
     }
 
+
     :root:not([data-theme="dark"]) body {
       background: linear-gradient(180deg, #e8f0ff 0, #f6f8fc 380px) no-repeat, var(--bg);
     }
+
 
     .welcome {
       padding: 26px 28px;
@@ -869,21 +995,26 @@
       border-radius: 24px;
     }
 
+
     .welcome p { color: var(--text-soft); }
+
 
     .brand-icon {
       background: linear-gradient(135deg, #5b8cff, #3b6cf6);
       box-shadow: 0 6px 16px rgba(59, 108, 246, .28);
     }
 
+
     .stat-card:nth-child(1) .stat-value { color: #e8742c; }
     .stat-card:nth-child(2) .stat-value { color: var(--green); }
     .stat-card:nth-child(3) .stat-value { color: var(--primary); }
     .stat-card:nth-child(4) .stat-value { color: #8a5cf6; }
 
+
     @media (max-width: 560px) {
       .welcome { padding: 20px 18px; border-radius: 20px; }
     }
+
 
     /* ---------- Quote, voice hero, grammar ---------- */
     .quote-banner {
@@ -898,8 +1029,10 @@
       border-radius: 20px;
     }
 
+
     .quote-banner .eyebrow { margin: 0 0 4px; }
     .quote-text { margin: 0; font-size: clamp(17px, 2.6vw, 21px); font-weight: 700; letter-spacing: -.3px; line-height: 1.35; }
+
 
     .voice-hero {
       display: flex;
@@ -915,27 +1048,33 @@
       box-shadow: 0 10px 28px rgba(76, 92, 255, .28);
     }
 
+
     .voice-hero h3 { margin: 2px 0 6px; font-size: 24px; letter-spacing: -.6px; color: #fff; }
     .voice-hero p { margin: 0; color: rgba(255, 255, 255, .9); font-size: 14px; max-width: 440px; }
     .voice-hero .eyebrow-light { margin: 0; font-size: 11px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: rgba(255, 255, 255, .8); }
     .hero-btn { background: #fff; color: #3b4fd6; font-size: 15px; min-height: 48px; padding: 12px 22px; }
     .hero-btn:hover:not(:disabled) { background: #f1f4ff; }
 
+
     .nav-button[data-view="voice"] { color: var(--primary); }
     .detail-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 17px; }
     .g-blank { display: inline-block; min-width: 80px; border-bottom: 2px solid var(--primary); }
+
 
     @media (max-width: 560px) {
       .voice-hero { padding: 20px 18px; }
       .hero-btn { width: 100%; }
     }
 
+
     /* ---------- Cores, telemóvel e correções ---------- */
     html { -webkit-text-size-adjust: 100%; }
     body { touch-action: manipulation; }
 
+
     .brand { cursor: pointer; border-radius: 14px; }
     .brand:focus-visible { outline: 2px solid var(--primary); outline-offset: 4px; }
+
 
     /* cada separador tem a sua cor */
     .nav-button { --nav-c: 59, 108, 246; }
@@ -952,6 +1091,7 @@
     .nav-button:hover { background: rgba(var(--nav-c), .10); }
     .nav-button.active { background: rgba(var(--nav-c), .14); color: rgb(var(--nav-c)); }
 
+
     /* respostas: violeta, para não se confundirem com os botões azuis */
     .option:hover:not(:disabled) { border-color: #a58bf8; background: rgba(139, 92, 246, .08); }
     .option:nth-child(1) .option-letter { background: rgba(59, 108, 246, .14); color: #3b6cf6; }
@@ -962,15 +1102,19 @@
     .option.correct .option-letter { background: rgba(22, 163, 74, .22); color: var(--green); }
     .option.incorrect .option-letter { background: rgba(194, 59, 69, .2); color: var(--red); }
 
+
     .button.success { background: #16a34a; color: #fff; }
     .button.success:hover:not(:disabled) { background: #15803d; }
+
 
     .lesson-card:nth-child(4n+2) .lesson-number { background: rgba(139, 92, 246, .14); color: #8b5cf6; }
     .lesson-card:nth-child(4n+3) .lesson-number { background: rgba(234, 111, 35, .15); color: #d9621b; }
     .lesson-card:nth-child(4n+4) .lesson-number { background: rgba(22, 163, 74, .14); color: #15803d; }
 
+
     /* página inicial: atalhos coloridos */
     .quick-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; }
+
 
     .quick-card {
       padding: 18px;
@@ -984,10 +1128,12 @@
       transition: transform .15s;
     }
 
+
     .quick-card:hover { transform: translateY(-2px); }
     .quick-card .qi { display: grid; place-items: center; width: 40px; height: 40px; margin-bottom: 10px; border-radius: 12px; background: var(--qb); color: var(--qc); font-size: 18px; font-weight: 800; }
     .quick-card h4 { margin: 0 0 4px; font-size: 16px; }
     .quick-card p { margin: 0; color: var(--muted); font-size: 12px; }
+
 
     /* sequência: pode esconder-se */
     .switch-row { display: flex; align-items: center; gap: 10px; font-size: 14px; cursor: pointer; }
@@ -996,32 +1142,39 @@
     .no-streak .stats .stat-card:first-child { display: none; }
     .no-streak .stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 
+
     /* gráfico semanal: o objetivo vai para uma legenda e os números têm espaço por cima */
     .chart-area { margin-top: 34px; }
     .chart-legend { display: flex; align-items: center; gap: 8px; margin-top: 2px; color: var(--muted); font-size: 12px; }
     .legend-dash { display: inline-block; width: 22px; border-top: 2px dashed var(--muted); }
 
+
     @media (max-width: 850px) {
       .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .no-streak .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
 
       /* menu em duas linhas, com o ícone por cima do nome */
       .sidebar { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; overflow: visible; padding: 8px; }
       .nav-button { flex-direction: column; justify-content: center; gap: 4px; min-width: 0; margin: 0; padding: 9px 2px; font-size: 11px; line-height: 1.1; text-align: center; white-space: nowrap; }
       .nav-icon { width: auto; font-size: 18px; }
 
+
       /* 16px evita o zoom automático do iPhone quando se toca num campo */
       input, select, textarea, .input, .select, .textarea, .search-input, .v-chip select { font-size: 16px; }
     }
+
 
     @media (max-width: 560px) {
       .quick-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
       .quick-card { padding: 14px; }
     }
 
+
     /* ---------- Avisos no topo: em baixo o Safari do iPhone esconde-os ---------- */
     .toast { top: calc(14px + env(safe-area-inset-top, 0px)); bottom: auto; right: 14px; left: 14px; max-width: none; text-align: center; transform: translateY(-20px); }
     .toast.show { transform: translateY(0); }
+
 
     /* ---------- Cada secção tem a sua cor ---------- */
     body { --v-rgb: 239, 91, 72; --primary: rgb(var(--v-rgb)); --primary-light: rgba(var(--v-rgb), .13); --primary-border: rgba(var(--v-rgb), .38); }
@@ -1037,6 +1190,7 @@
     body[data-view="ailab"] { --v-rgb: 192, 38, 211; }
     :root[data-theme="dark"] body { --on-primary: #fff; }
 
+
     .nav-button[data-view="dash"] { --nav-c: 239, 91, 72; }
     .nav-button[data-view="home"] { --nav-c: 14, 165, 233; }
     .nav-button[data-view="grammar"] { --nav-c: 139, 92, 246; }
@@ -1048,9 +1202,11 @@
     .nav-button[data-view="diagnostic"] { --nav-c: 180, 83, 9; }
     .nav-button[data-view="ailab"] { --nav-c: 192, 38, 211; }
 
+
     .button:hover:not(:disabled) { background: var(--primary); filter: brightness(.92); }
     .button.secondary:hover:not(:disabled) { filter: none; }
     .button.success:hover:not(:disabled) { background: #15803d; filter: none; }
+
 
     :root:not([data-theme="dark"]) body { background: linear-gradient(180deg, rgba(var(--v-rgb), .11) 0, #f6f8fc 420px) no-repeat, var(--bg); }
     .card { border-top: 3px solid rgba(var(--v-rgb), .45); }
@@ -1060,10 +1216,12 @@
     .hero-btn { color: #c2255c; }
     .brand-icon { background: linear-gradient(135deg, #ff9a56, #e0457b); box-shadow: 0 6px 16px rgba(224, 69, 123, .28); }
 
+
     /* plano do dia, estatísticas pequenas, separadores do Review */
     .mini-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-bottom: 16px; }
     .mini-stats .stat-card { padding: 14px; }
     .mini-stats .stat-value { font-size: 24px; }
+
 
     .plan-row { display: flex; align-items: center; gap: 12px; width: 100%; margin-top: 10px; padding: 14px 16px; border: 1px solid var(--border); border-left: 5px solid var(--pc); border-radius: 14px; background: var(--surface); color: var(--text); text-align: left; box-shadow: var(--shadow); }
     .plan-row .check { display: grid; place-items: center; flex: 0 0 28px; width: 28px; height: 28px; border: 2px solid var(--pc); border-radius: 50%; color: #fff; font-weight: 800; }
@@ -1071,10 +1229,12 @@
     .plan-row .pt { flex: 1; font-weight: 700; }
     .plan-row .ps { display: block; color: var(--muted); font-size: 12px; font-weight: 400; }
 
+
     .mode-tabs { display: flex; gap: 8px; margin-bottom: 14px; }
     .mode-tab { flex: 1; padding: 10px 12px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); color: var(--text-soft); font-weight: 700; }
     .mode-tab.active { background: rgba(var(--v-rgb), .14); border-color: rgba(var(--v-rgb), .45); color: rgb(var(--v-rgb)); }
     .mode-tab span { margin-left: 6px; padding: 1px 8px; border-radius: 99px; background: rgba(var(--v-rgb), .18); font-size: 12px; }
+
 
     /* ---------- Practice e menu em duas linhas ---------- */
     body[data-view="practice"] { --v-rgb: 244, 63, 94; }
@@ -1083,13 +1243,59 @@
     .chip-word { margin: 3px; padding: 8px 13px; border: 1px solid var(--border); border-radius: 999px; background: var(--surface); color: var(--text); font-size: 15px; font-weight: 600; box-shadow: var(--shadow); }
     .chip-word.used { opacity: .25; pointer-events: none; }
 
+
     @media (max-width: 850px) {
       .sidebar { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 4px; }
       .nav-button { padding: 8px 0; font-size: 10px; letter-spacing: -.2px; }
       .nav-icon { font-size: 17px; }
     }
-    </style>
+    
+    /* ---------- v2.0: versão, plano, revisão, estatísticas ---------- */
+    .pill.version { cursor: pointer; border: 1px solid var(--border); background: var(--surface); color: var(--text-soft); font-weight: 800; font-family: inherit; }
+    .pill.version.warn { border-color: #e0a030; background: #fff4dc; color: #8a5a00; }
+    .version-banner { position: sticky; top: 0; z-index: 60; padding: 10px 16px; background: #fff4dc; color: #6b4300; border-bottom: 1px solid #e0a030; font-size: 13px; font-weight: 600; text-align: center; }
+    [data-theme="dark"] .version-banner { background: #3a2c10; color: #ffd48a; border-color: #8a6a20; }
+    .ver-modal { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: 16px; background: rgba(0, 0, 0, .5); }
+    .ver-box { width: min(520px, 100%); max-height: 85vh; overflow: auto; padding: 22px; border-radius: 18px; background: var(--surface); color: var(--text); border: 1px solid var(--border); box-shadow: 0 20px 60px rgba(0, 0, 0, .35); }
+    .ver-box h3 { margin: 0 0 4px; }
+    .ver-box h4 { margin: 18px 0 6px; font-size: 15px; }
+    .ver-box ul { margin: 0; padding-left: 18px; color: var(--text-soft); font-size: 14px; line-height: 1.55; }
+    .plan-meta { margin: 0 0 4px; }
+    .plan-min { margin-left: auto; padding-left: 8px; color: var(--muted); font-size: 12px; font-weight: 700; white-space: nowrap; }
+    .plan-row.done { opacity: .72; }
+    .grade-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .grade-row .button { flex: 1 1 72px; }
+    .grade-row small { display: block; font-weight: 600; opacity: .75; font-size: 11px; }
+    .chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+    .chip { padding: 6px 12px; border-radius: 99px; border: 1px solid var(--border); background: var(--surface); color: var(--text-soft); font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; }
+    .chip.active { background: rgba(var(--v-rgb), .14); border-color: rgba(var(--v-rgb), .45); color: rgb(var(--v-rgb)); }
+    .tag-edit { cursor: pointer; }
+    .rec-box { margin: 0 0 14px; padding: 12px 14px; border-radius: 12px; background: rgba(234, 111, 35, .10); border: 1px solid rgba(234, 111, 35, .3); }
+    .rec-row { margin-top: 6px; font-size: 14px; }
+    .rec-row .from { text-decoration: line-through; color: var(--red); }
+    .rec-row .to { color: var(--green); font-weight: 700; }
+    .bars { display: flex; align-items: flex-end; gap: 8px; height: 130px; margin-top: 8px; }
+    .bars .col { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; height: 100%; }
+    .bars .col i { display: block; width: 100%; max-width: 34px; min-height: 3px; border-radius: 8px 8px 3px 3px; background: var(--primary); opacity: .85; }
+    .bars .col b { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+    .bars .col span { font-size: 10px; color: var(--muted); margin-top: 4px; }
+    .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(105px, 1fr)); gap: 10px; margin: 12px 0; }
+    .kpi { border: 1px solid var(--border); border-radius: 12px; padding: 10px 12px; }
+    .kpi b { display: block; font-size: 22px; }
+    .kpi span { font-size: 12px; color: var(--muted); }
+    .kpi em { font-style: normal; font-size: 11px; color: var(--muted); }
+    .coach-note { margin: 12px 0; padding: 12px 14px; border-radius: 12px; background: rgba(var(--v-rgb), .08); border: 1px solid rgba(var(--v-rgb), .25); line-height: 1.55; }
+    .coach-note ul { margin: 8px 0 0; padding-left: 18px; }
+    .mem-row { display: flex; gap: 8px; align-items: center; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+    .v-natural { margin-top: 6px; color: var(--text-soft); font-size: 13px; }
+    .v-trend { margin: 8px 0 0; font-size: 13px; font-weight: 700; color: var(--text-soft); }
+    .v-hl { margin-top: 6px; font-size: 14px; }
+    .v-next { margin-top: 12px; padding: 10px 12px; border-radius: 12px; background: rgba(var(--v-rgb), .10); font-size: 14px; }
+    .v-rep { display: inline-block; margin-left: 6px; padding: 1px 8px; border-radius: 99px; background: rgba(234, 111, 35, .16); color: #b45309; font-size: 11px; font-weight: 800; }
+    .listen-text { margin-top: 14px; padding: 12px 14px; border-radius: 12px; border: 1px dashed var(--border); line-height: 1.7; white-space: pre-line; }
+  </style>
 </head>
+
 
 <body data-view="voice">
   <div class="app">
@@ -1102,24 +1308,30 @@
         </div>
       </div>
       <div class="top-actions">
+        <button class="pill version" id="version-pill" title="What’s new" aria-label="App version">v2.0.0</button>
         <button class="button secondary small" id="btn-back">← Back to the app</button>
         <button class="theme-toggle" id="btn-connect" aria-label="Connection settings" title="Connection settings">⚙</button>
         <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" title="Dark / light mode">☾</button>
       </div>
     </header>
 
+
     <section class="card" id="connect-card" style="display:none;margin-bottom:24px">
       <h4 class="content-title">Connect to your app</h4>
       <p class="hint">Paste the web app URL (the one ending in /exec) and the VOICE_TOKEN you saved in the script properties. They stay only in this browser.</p>
 
+
       <label class="field-label" for="cfg-url">Web app URL</label>
       <input class="input" id="cfg-url" type="url" placeholder="https://script.google.com/macros/s/.../exec" autocomplete="off">
+
 
       <label class="field-label" for="cfg-token" style="margin-top:12px">Token</label>
       <input class="input" id="cfg-token" type="password" placeholder="VOICE_TOKEN" autocomplete="off">
 
+
       <label class="field-label" for="cfg-app" style="margin-top:12px">Main app URL (optional, to return to it)</label>
       <input class="input" id="cfg-app" type="url" placeholder="https://script.google.com/macros/s/.../exec" autocomplete="off">
+
 
       <div class="conversation-actions">
         <button class="button secondary" id="cfg-test">Test connection</button>
@@ -1127,6 +1339,7 @@
       </div>
       <div id="cfg-msg"></div>
     </section>
+
 
     <main class="main">
         <section class="view active" id="view-voice">
@@ -1138,11 +1351,14 @@
           </div>
 
 
+
+
           <div id="voice-app">
             <div class="mode-tabs" id="v-modes">
               <button class="mode-tab active" id="v-tab-talk">🎙 Conversation</button>
               <button class="mode-tab" id="v-tab-pron">👄 Pronunciation</button>
             </div>
+
 
             <div class="card" id="v-start">
               <h4 class="content-title">Start a conversation</h4>
@@ -1158,7 +1374,9 @@
               </div>
               <button class="button full" id="v-btn-start" style="margin-top:16px">🎙 Start</button>
               <div id="v-support"></div>
+              <div id="v-memory"></div>
             </div>
+
 
             <div class="hidden" id="v-chat">
               <div class="v-toolbar">
@@ -1181,15 +1399,19 @@
                 <span class="v-chip v-timer" id="v-timer">00:00</span>
               </div>
 
+
               <p class="v-title" id="v-title"></p>
+
 
               <div class="card hidden" id="v-fix-panel" style="margin-bottom:10px;max-height:260px;overflow:auto;padding:14px"></div>
               <div class="v-log" id="v-log" aria-live="polite"></div>
+
 
               <div class="v-live" id="v-live"></div>
               <div class="v-meter hidden" id="v-meter"><span id="v-meter-time">0:00</span><div class="v-meter-bar"><i id="v-meter-fill"></i></div></div>
               <div style="text-align:center;margin-bottom:6px"><button class="v-link hidden" id="v-btn-discard">✕ Discard what I said</button></div>
               <div class="v-hint hidden" id="v-hint"></div>
+
 
               <div class="v-controls">
                 <button class="button secondary small left" id="v-btn-hint">💡 Hint</button>
@@ -1198,42 +1420,147 @@
               </div>
               <div class="v-mic-label" id="v-mic-label">Tap the microphone to speak</div>
 
+
               <div class="v-type-row">
                 <input class="input" id="v-type" maxlength="500" placeholder="Or type your answer..." autocomplete="off">
                 <button class="button" id="v-btn-send">Send</button>
               </div>
 
+
               <button class="button v-end" id="v-btn-end">⏹ End conversation and get my level</button>
             </div>
+
 
             <div class="card hidden" id="v-summary"></div>
             <div class="card hidden" id="v-pron"></div>
           </div>
         </section>
 
+
     </main>
   </div>
 
+
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
 
   <script>
     'use strict';
+
+    /* ---------- Versão da app (aparece no topo) ---------- */
+
+    const APP_FILE_VERSION = '2.0.0';
+    const APP_CHANGELOG_FALLBACK = [
+      { version: APP_FILE_VERSION, date: '2026-10-31', notes: ['Liga ao servidor para ver o que mudou nesta versão.'] }
+    ];
+
+    function showVersionBanner(message) {
+      let box = document.getElementById('version-banner');
+
+      if (!message) {
+        if (box) box.remove();
+        return;
+      }
+
+      if (!box) {
+        box = document.createElement('div');
+        box.id = 'version-banner';
+        box.className = 'version-banner';
+        document.body.insertBefore(box, document.body.firstChild);
+      }
+
+      box.textContent = message;
+    }
+
+    // Chamada sempre que o servidor responde: compara a versão do ficheiro com a do Code.gs
+    function applyServerVersion(serverVersion, changelog) {
+      window.__serverVersion = serverVersion === undefined ? '' : serverVersion;
+      if (Array.isArray(changelog) && changelog.length) window.__changelog = changelog;
+
+      const mismatch = String(serverVersion === undefined ? '' : serverVersion) !== APP_FILE_VERSION;
+      const pill = document.getElementById('version-pill');
+
+      if (pill) {
+        pill.textContent = 'v' + APP_FILE_VERSION + (mismatch ? ' ⚠' : '');
+        pill.classList.toggle('warn', mismatch);
+      }
+
+      if (!mismatch) {
+        showVersionBanner('');
+        return;
+      }
+
+      const serverText = serverVersion === undefined || serverVersion === '' || typeof serverVersion === 'number'
+        ? 'anterior à 2.0.0'
+        : String(serverVersion);
+
+      showVersionBanner(
+        'Versões diferentes: este ficheiro é a v' + APP_FILE_VERSION + ' e o servidor (Code.gs) é a ' + serverText +
+        '. Cola o ficheiro mais recente no Apps Script e cria uma nova versão da implementação.'
+      );
+    }
+
+    function openVersionModal() {
+      const previous = document.getElementById('ver-modal');
+      if (previous) previous.remove();
+
+      const log = Array.isArray(window.__changelog) && window.__changelog.length ? window.__changelog : APP_CHANGELOG_FALLBACK;
+      const server = window.__serverVersion;
+      const wrap = document.createElement('div');
+      wrap.className = 'ver-modal';
+      wrap.id = 'ver-modal';
+
+      wrap.innerHTML =
+        '<div class="ver-box" role="dialog" aria-modal="true" aria-label="Version">' +
+        '<h3>Daily English v' + escapeHtml(APP_FILE_VERSION) + '</h3>' +
+        '<p class="hint" style="margin:0">' +
+        (server === undefined ? 'Versão do servidor ainda não verificada.' : 'Servidor (Code.gs): ' + (server ? 'v' + escapeHtml(String(server)) : 'versão antiga') + '.') +
+        '</p>' +
+        log.map(entry =>
+          '<h4>v' + escapeHtml(entry.version) + (entry.date ? ' · ' + escapeHtml(entry.date) : '') + '</h4>' +
+          '<ul>' + (entry.notes || []).map(note => '<li>' + escapeHtml(note) + '</li>').join('') + '</ul>'
+        ).join('') +
+        '<div class="conversation-actions"><button class="button" id="ver-close">Close</button></div></div>';
+
+      document.body.appendChild(wrap);
+
+      const onKey = event => { if (event.key === 'Escape') close(); };
+      const close = () => { wrap.remove(); document.removeEventListener('keydown', onKey); };
+
+      document.addEventListener('keydown', onKey);
+      wrap.addEventListener('click', event => { if (event.target === wrap) close(); });
+      wrap.querySelector('#ver-close').addEventListener('click', close);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const pill = document.getElementById('version-pill');
+
+      if (pill) {
+        pill.textContent = 'v' + APP_FILE_VERSION;
+        pill.addEventListener('click', openVersionModal);
+      }
+    });
+
 
     const LS_URL = 'ed-voice-url';
     const LS_TOKEN = 'ed-voice-token';
     const LS_APP = 'ed-app-url';
 
+
     function lsGet(key) {
       try { return localStorage.getItem(key) || ''; } catch (e) { return ''; }
     }
+
 
     function lsSet(key, value) {
       try { localStorage.setItem(key, value); } catch (e) { /* ignore */ }
     }
 
+
     function wait(ms) {
       return new Promise(resolve => setTimeout(resolve, ms));
     }
+
 
     function escapeHtml(value) {
       return String(value == null ? '' : value)
@@ -1244,39 +1571,79 @@
         .replace(/'/g, '&#39;');
     }
 
+
     function escapeAttr(value) {
       return escapeHtml(value);
     }
 
+
     let toastTimeout;
+
 
     function showToast(message) {
       const toast = document.getElementById('toast');
       toast.textContent = message;
       toast.classList.add('show');
 
+
       window.clearTimeout(toastTimeout);
       toastTimeout = window.setTimeout(() => toast.classList.remove('show'), 3500);
     }
 
-    // A página de voz não precisa de recarregar dados da app principal
+
+    // Chama uma função da app principal através da API com token
+    function runServer(functionName, args) {
+      return apiPost('rpc', { fn: functionName, args: args || [] }).then(data => data.result);
+    }
+
+
+    // Dados da app (erros, palavras, memória): pedidos só quando são precisos
+    let voiceData = null;
+
+    async function ensureAppData() {
+      if (!voiceData) voiceData = await runServer('getAppData');
+      return voiceData;
+    }
+
+
+    // Depois de uma conversa, os dados guardados mudaram: o próximo pedido vai buscá-los outra vez
     function refreshAppData() {
+      voiceData = null;
       return Promise.resolve();
     }
 
+
+    // Compara a versão deste ficheiro com a do Code.gs
+    async function checkServerVersion() {
+      if (!lsGet(LS_URL) || !lsGet(LS_TOKEN)) return;
+
+      try {
+        const ping = await apiPost('ping');
+        applyServerVersion(ping.version, ping.changelog);
+      } catch (error) {
+        // sem ligação: a versão do servidor fica por verificar
+      }
+    }
+
+
     /* ---------- Tema ---------- */
+
 
     function applyTheme(theme) {
       document.documentElement.dataset.theme = theme;
       document.getElementById('theme-toggle').textContent = theme === 'dark' ? '☀' : '☾';
     }
 
+
     function initTheme() {
       let theme = lsGet('ed-theme');
 
+
       if (!theme) theme = 'light';
 
+
       applyTheme(theme);
+
 
       document.getElementById('theme-toggle').addEventListener('click', () => {
         const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
@@ -1285,26 +1652,33 @@
       });
     }
 
+
     /* ---------- Ligação ao Apps Script ---------- */
+
 
     async function apiPost(action, payload) {
       const url = lsGet(LS_URL);
       const token = lsGet(LS_TOKEN);
 
+
       if (!url || !token) {
         throw new Error('Configura primeiro o URL e o token (botão ⚙).');
       }
+
 
       // Só repete pedidos que não gravam nada na folha
       const retryable = ['ping', 'voiceTurn', 'voiceHint', 'voiceAudioTurn', 'voiceSayIt'].indexOf(action) !== -1;
       const attempts = retryable ? 2 : 1;
       const timeoutMs = (action === 'voiceSummary' || action === 'voiceAudioTurn') ? 60000 : 40000;
 
+
       let lastError = null;
+
 
       for (let attempt = 1; attempt <= attempts; attempt++) {
         const controller = new AbortController();
         const timer = setTimeout(() => controller.abort(), timeoutMs);
+
 
         try {
           // Sem cabeçalhos personalizados: pedido simples, sem preflight CORS
@@ -1314,8 +1688,10 @@
             signal: controller.signal
           });
 
+
           const raw = await response.text();
           let data = null;
+
 
           try {
             data = JSON.parse(raw);
@@ -1327,6 +1703,7 @@
             );
           }
 
+
           if (data) {
             if (!data.ok) {
               const outdated = data.error === 'Ação desconhecida.';
@@ -1335,10 +1712,12 @@
                 : (data.error || 'Erro desconhecido.')), { final: true, outdated });
             }
 
+
             return data;
           }
         } catch (error) {
           if (error && error.final) throw error;
+
 
           if (error && error.name === 'AbortError') {
             lastError = new Error('A resposta demorou demasiado. Tenta outra vez.');
@@ -1352,16 +1731,21 @@
           clearTimeout(timer);
         }
 
+
         if (attempt < attempts) await wait(1500);
       }
+
 
       throw lastError;
     }
 
+
     /* ---------- Voltar à app principal ---------- */
+
 
     function mainAppUrl() {
       const match = String(location.hash || '').match(/[#&]app=([^&]+)/);
+
 
       if (match) {
         try {
@@ -1370,20 +1754,26 @@
         } catch (e) { /* ignore */ }
       }
 
+
       return lsGet(LS_APP);
     }
+
 
     function backToApp() {
       Voice.leave();
 
+
       const appUrl = mainAppUrl();
+
 
       try {
         if (window.opener && !window.opener.closed) window.opener.focus();
       } catch (e) { /* ignore */ }
 
+
       // Se a página foi aberta a partir da app, fecha-se e volta-se ao separador anterior
       window.close();
+
 
       // Se o browser não deixar fechar, volta à app principal nesta mesma janela
       setTimeout(() => {
@@ -1395,7 +1785,9 @@
       }, 400);
     }
 
+
     /* ---------- Cartão de ligação ---------- */
+
 
     function setConnectMessage(text, kind) {
       const cls = kind === 'ok' ? 'feedback show good' : kind === 'bad' ? 'error-box' : 'info-box';
@@ -1403,127 +1795,163 @@
         '<div class="' + cls + '" style="margin-top:14px">' + escapeHtml(text) + '</div>';
     }
 
+
     function toggleConnectCard(forceOpen) {
       const card = document.getElementById('connect-card');
       const open = forceOpen !== undefined ? forceOpen : card.style.display === 'none';
       card.style.display = open ? 'block' : 'none';
     }
 
+
     function readConnectFields() {
       const url = document.getElementById('cfg-url').value.trim();
       const token = document.getElementById('cfg-token').value.trim();
       const app = document.getElementById('cfg-app').value.trim();
 
+
       lsSet(LS_URL, url);
       lsSet(LS_TOKEN, token);
       if (app) lsSet(LS_APP, app);
 
+
       return { url, token };
     }
+
 
     function setupConnect() {
       document.getElementById('cfg-url').value = lsGet(LS_URL);
       document.getElementById('cfg-token').value = lsGet(LS_TOKEN);
       document.getElementById('cfg-app').value = mainAppUrl();
 
+
       document.getElementById('btn-connect').addEventListener('click', () => toggleConnectCard());
       document.getElementById('btn-back').addEventListener('click', backToApp);
       document.getElementById('brand-home').addEventListener('click', backToApp);
+
 
       document.getElementById('cfg-test').addEventListener('click', async () => {
         readConnectFields();
         setConnectMessage('A testar...', 'info');
 
+
         try {
           const ping = await apiPost('ping');
-          const fresh = ping.version >= 5;
+          const fresh = Number(ping.protocol || ping.version) >= 5;
+          applyServerVersion(ping.version, ping.changelog);
           setConnectMessage(fresh ? 'Ligação OK. Clica em Save.' : 'Ligação OK, mas o servidor está desatualizado: cola o Code.gs novo e cria uma Nova versão da implementação.', fresh ? 'ok' : 'bad');
         } catch (error) {
           setConnectMessage(error.message, 'bad');
         }
       });
 
+
       document.getElementById('cfg-save').addEventListener('click', () => {
         const { url, token } = readConnectFields();
+
 
         if (!/^https:\/\/script\.google\.com\//.test(url) || !token) {
           setConnectMessage('Cola o URL (começa por https://script.google.com/) e o token.', 'bad');
           return;
         }
 
+
         setConnectMessage('Guardado.', 'ok');
         toggleConnectCard(false);
+        checkServerVersion();
       });
+
 
       if (!lsGet(LS_URL) || !lsGet(LS_TOKEN)) toggleConnectCard(true);
     }
 
+
     /* ---------- Voz feminina para tudo o que a app diz ---------- */
+
 
     const FEMALE_VOICE = /(female|woman|serena|kate\b|martha|stephanie|samantha|karen|moira|tessa|fiona|victoria|susan|allison|ava\b|zoe|nicky|libby|sonia|hazel|emma|amy|joanna|salli|kimberly|ivy|olivia|natasha|catherine|sandy|shelley|flo\b|zira|jenny|aria|michelle|joana|maria|helena|catarina)/i;
     const MALE_VOICE = /(\bmale\b|daniel|arthur|oliver|gordon|fred\b|alex\b|aaron|rishi|ralph|reed|rocko|grandpa|albert|bruce|junior|nathan|evan|tom\b|ryan|mark\b|guy\b|george|brian|liam|matthew|christopher|james|david|eddy|jorge|diego|ricardo|joão)/i;
+
 
     function scoreVoice(voice) {
       const lang = String(voice.lang || '').replace('_', '-');
       const name = String(voice.name || '');
 
+
       if (!/^en/i.test(lang)) return -1000;
+
 
       let score = 0;
 
+
       if (lang === 'en-GB') score += 30;
       else if (/^en-(AU|IE|US|ZA|IN)/i.test(lang)) score += 10;
+
 
       // Vozes fixas preferidas: Martha (iPhone) e Google UK English Female (Chrome/Android)
       if (/google uk english female/i.test(name)) score += 300;
       else if (/^martha/i.test(name)) score += 200;
 
+
       if (FEMALE_VOICE.test(name)) score += 60;
       if (MALE_VOICE.test(name)) score -= 100;
       if (/enhanced|premium|neural|natural/i.test(name)) score += 8;
 
+
       return score;
     }
+
 
     function englishVoices() {
       if (!('speechSynthesis' in window)) return [];
       return window.speechSynthesis.getVoices().filter(v => /^en/i.test(String(v.lang || '').replace('_', '-')));
     }
 
+
     // Escolhe a melhor voz feminina disponível (ou a que o utilizador escolheu).
     // Se só houver vozes masculinas, sobe o tom para soar mais feminina.
     function chooseVoice(preferredName) {
       const list = englishVoices();
 
+
       if (!list.length) return { voice: null, pitch: 1.2 };
+
 
       const chosen = preferredName && list.find(v => v.name === preferredName);
       if (chosen) return { voice: chosen, pitch: 1 };
 
+
       let best = null;
       let bestScore = -Infinity;
+
 
       list.forEach(v => {
         const s = scoreVoice(v);
         if (s > bestScore) { best = v; bestScore = s; }
       });
 
+
       return { voice: best, pitch: bestScore >= 60 ? 1 : 1.2 };
     }
+
 
     function fillVoiceSelect(select, selectedName) {
       if (!select) return;
 
+
       const list = englishVoices().slice().sort((a, b) => scoreVoice(b) - scoreVoice(a));
+
 
       select.innerHTML = '<option value="">Auto (Martha / Google UK Female)</option>' + list.map(v =>
         '<option value="' + escapeAttr(v.name) + '">' + escapeHtml(v.name + ' (' + v.lang + ')') + '</option>'
       ).join('');
 
+
       select.value = selectedName && list.some(v => v.name === selectedName) ? selectedName : '';
     }
 
+
     /* ---------- Voice conversation (só na versão alojada: o microfone precisa de página própria) ---------- */
+
 
     const Voice = (function () {
       const $ = id => document.getElementById(id);
@@ -1533,7 +1961,9 @@
         (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
       const MOBILE = IOS || /Android/i.test(navigator.userAgent);
 
+
       const FRIEND = 'Friendly everyday chat with a curious friend, not an exam. Share short opinions or anecdotes of your own (you may invent them) and ask follow-up questions. Topic: ';
+
 
       const GROUPS = [
         {
@@ -1606,6 +2036,7 @@
         { label: 'Your own topic', items: [{ id: 'custom', label: 'Choose my own topic...', brief: '' }] }
       ];
 
+
       const state = {
         scenario: '',
         history: [],
@@ -1637,7 +2068,9 @@
         inChat: false
       };
 
+
       /* ---- arranque ---- */
+
 
       function init() {
         $('v-scenario').innerHTML = GROUPS.map(group =>
@@ -1648,9 +2081,11 @@
           '</optgroup>'
         ).join('');
 
+
         $('v-scenario').addEventListener('change', () => {
           $('v-custom-wrap').classList.toggle('hidden', $('v-scenario').value !== 'custom');
         });
+
 
         $('v-btn-start').addEventListener('click', startSession);
         $('v-btn-mic').addEventListener('click', onMicTap);
@@ -1666,29 +2101,35 @@
         $('v-tab-talk').addEventListener('click', () => setMode('talk'));
         $('v-tab-pron').addEventListener('click', () => setMode('pron'));
 
+
         $('v-btn-fixes').addEventListener('click', () => {
           renderFixPanel();
           $('v-fix-panel').classList.toggle('hidden');
         });
 
+
         $('v-type').addEventListener('keydown', event => {
           if (event.key === 'Enter') sendTyped();
         });
+
 
         if ('speechSynthesis' in window) {
           window.speechSynthesis.onvoiceschanged = refreshVoices;
           refreshVoices();
         }
 
+
         $('v-voice-select').addEventListener('change', () => {
           lsSet('ed-voice-name', $('v-voice-select').value);
           speak('Hi! This is how I sound.');
         });
 
+
         // No telemóvel a IA ouve e transcreve a gravação: sem limite de silêncio
         $('v-opt-ai').checked = MOBILE && supportsRecording();
         $('v-opt-ai').addEventListener('change', applyEngine);
         applyEngine();
+
 
         if (IOS) {
           $('v-opt-hands').checked = false;
@@ -1698,6 +2139,7 @@
             'Settings › Accessibility › Spoken Content › Voices › English.</div>';
         }
 
+
         if (!SR && !supportsRecording()) {
           $('v-support').innerHTML =
             '<div class="info-box" style="margin:14px 0 0">This browser does not support speech recognition. ' +
@@ -1705,7 +2147,9 @@
         }
       }
 
-      function enter() { state.visible = true; }
+
+      function enter() { state.visible = true; renderMemory(); }
+
 
       function leave() {
         state.visible = false;
@@ -1714,11 +2158,15 @@
         releaseContinue(true);
       }
 
+
       function showPanel(id) {
         ['v-start', 'v-chat', 'v-summary', 'v-pron'].forEach(name => {
           $(name).classList.toggle('hidden', name !== id);
         });
+
+        if (id === 'v-start') renderMemory();
       }
+
 
       function findScenario(id) {
         for (const group of GROUPS) {
@@ -1728,17 +2176,21 @@
         return null;
       }
 
+
       function scenarioBrief() {
         const id = $('v-scenario').value;
+
 
         if (id === 'custom') {
           const topic = $('v-custom-topic').value.trim();
           return topic ? FRIEND + topic : FRIEND + 'an everyday topic of your choice.';
         }
 
+
         const item = findScenario(id);
         return item ? item.brief : FRIEND + 'an everyday topic.';
       }
+
 
       function formatTime(total) {
         const m = String(Math.floor(total / 60)).padStart(2, '0');
@@ -1746,11 +2198,14 @@
         return m + ':' + s;
       }
 
+
       function applyFixToggle() {
         $('v-log').classList.toggle('hide-fix', !$('v-opt-fix').checked);
       }
 
+
       /* ---- sessão ---- */
+
 
       async function startSession() {
         state.scenario = scenarioBrief();
@@ -1763,23 +2218,28 @@
         state.sessionKey = Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
         state.visible = true;
 
+
         releaseContinue(true);
         stopListening();
         setBusy(false);
         updateFixCount();
+
 
         $('v-fix-panel').classList.add('hidden');
         $('v-log').innerHTML = '';
         $('v-live').textContent = '';
         $('v-hint').classList.add('hidden');
 
+
         const selected = findScenario($('v-scenario').value);
         $('v-title').textContent = selected ? selected.label : 'Conversation';
+
 
         applyFixToggle();
         unlockSpeech();
         state.inChat = true;
         showPanel('v-chat');
+
 
         clearInterval(state.timer);
         $('v-timer').textContent = '00:00';
@@ -1788,47 +2248,58 @@
           $('v-timer').textContent = formatTime(state.seconds);
         }, 1000);
 
+
         await aiTurn('', true, null, false);
       }
 
+
       /* ---- mensagens ---- */
+
 
       function addBubble(role, text, pt) {
         const wrap = document.createElement('div');
         wrap.className = 'v-msg ' + role;
+
 
         const bubble = document.createElement('div');
         bubble.className = 'v-bubble';
         bubble.textContent = (pt ? '🇵🇹 ' : '') + text;
         wrap.appendChild(bubble);
 
+
         if (role === 'ai') {
           const tools = document.createElement('div');
           tools.className = 'v-tools';
+
 
           const replay = document.createElement('button');
           replay.className = 'v-link';
           replay.textContent = '🔊 Listen again';
           replay.addEventListener('click', () => speak(text));
 
+
           tools.appendChild(replay);
           wrap.appendChild(tools);
         }
+
 
         $('v-log').appendChild(wrap);
         scrollLog();
         return wrap;
       }
 
+
       function noteActions(box, spokenText, withContinue) {
         const actions = document.createElement('div');
         actions.className = 'v-fix-actions';
+
 
         const listen = document.createElement('button');
         listen.className = 'button secondary small';
         listen.textContent = '🔊 Listen';
         listen.addEventListener('click', () => speak(spokenText));
         actions.appendChild(listen);
+
 
         if (withContinue) {
           if ($('v-opt-say').checked) {
@@ -1839,6 +2310,7 @@
             say.addEventListener('click', onMicTap);
             actions.appendChild(say);
 
+
             const skip = document.createElement('button');
             skip.className = 'button small';
             skip.style.background = 'var(--surface-3)';
@@ -1846,6 +2318,7 @@
             skip.textContent = 'Skip ▶';
             skip.addEventListener('click', () => releaseContinue(false));
             actions.appendChild(skip);
+
 
             state.sayBox = box;
           } else {
@@ -1857,17 +2330,21 @@
           }
         }
 
+
         box.appendChild(actions);
       }
+
 
       function addFix(wrap, correction, withContinue) {
         const box = document.createElement('div');
         box.className = 'v-fix';
 
+
         const better = document.createElement('div');
         better.innerHTML = '💡 <strong>Better:</strong> ';
         better.appendChild(document.createTextNode(correction.better));
         box.appendChild(better);
+
 
         if (correction.note) {
           const note = document.createElement('div');
@@ -1875,19 +2352,30 @@
           box.appendChild(note);
         }
 
+        if (correction.natural && !sameSentence(correction.natural, correction.better)) {
+          const nat = document.createElement('div');
+          nat.className = 'v-natural';
+          nat.textContent = '🗣 More natural: ' + correction.natural;
+          box.appendChild(nat);
+        }
+
+
         noteActions(box, correction.better, withContinue);
         wrap.appendChild(box);
         scrollLog();
       }
 
+
       function addTranslation(wrap, translation, withContinue) {
         const box = document.createElement('div');
         box.className = 'v-fix v-trans';
+
 
         const line = document.createElement('div');
         line.innerHTML = '🇵🇹 → 🇬🇧 <strong>In English:</strong> ';
         line.appendChild(document.createTextNode(translation.english));
         box.appendChild(line);
+
 
         if (translation.portuguese) {
           const pt = document.createElement('div');
@@ -1895,10 +2383,12 @@
           box.appendChild(pt);
         }
 
+
         noteActions(box, translation.english, withContinue);
         wrap.appendChild(box);
         scrollLog();
       }
+
 
       function addTyping() {
         const wrap = document.createElement('div');
@@ -1909,12 +2399,15 @@
         return wrap;
       }
 
+
       function scrollLog() {
         const log = $('v-log');
         log.scrollTop = log.scrollHeight;
       }
 
+
       /* ---- pausa para ler correções ---- */
+
 
       function waitForContinue() {
         return new Promise(resolve => {
@@ -1923,37 +2416,47 @@
         });
       }
 
+
       function releaseContinue(skip) {
         state.sayTarget = null;
         state.sayAttempts = 0;
 
+
         if (!state.continueResolve) return;
+
 
         const resolve = state.continueResolve;
         state.continueResolve = null;
 
+
         document.querySelectorAll('#v-log .v-fix-actions .button:not(.secondary)')
           .forEach(button => button.remove());
+
 
         updateMic();
         resolve(!!skip);
       }
 
+
       function updateFixCount() {
         $('v-fix-count').textContent = String(state.fixes.length);
       }
+
 
       function buildFixItem(item) {
         const box = document.createElement('div');
         box.className = 'mistake';
 
+
         const said = document.createElement('span');
         said.className = 'from';
         said.textContent = item.said;
 
+
         const better = document.createElement('span');
         better.className = 'to';
         better.textContent = item.better;
+
 
         const listen = document.createElement('button');
         listen.className = 'v-link';
@@ -1961,7 +2464,9 @@
         listen.setAttribute('aria-label', 'Listen');
         listen.addEventListener('click', () => speak(item.better));
 
+
         box.append(said, document.createTextNode(' → '), better, document.createTextNode(' '), listen);
+
 
         if (item.note) {
           const why = document.createElement('span');
@@ -1970,30 +2475,47 @@
           box.appendChild(why);
         }
 
+        if (item.natural && !sameSentence(item.natural, item.better)) {
+          const nat = document.createElement('span');
+          nat.className = 'v-natural';
+          nat.style.display = 'block';
+          nat.textContent = '🗣 More natural: ' + item.natural;
+          box.appendChild(nat);
+        }
+
+
         return box;
       }
+
 
       function renderFixPanel() {
         const panel = $('v-fix-panel');
         panel.innerHTML = '';
+
 
         if (!state.fixes.length) {
           panel.textContent = 'No corrections yet. They will be listed here as you speak.';
           return;
         }
 
+
         state.fixes.slice().reverse().forEach(item => panel.appendChild(buildFixItem(item)));
       }
 
+
       /* ---- turnos ---- */
+
 
       async function aiTurn(userText, start, userWrap, viaPt, audio) {
         const session = state.sessionId;
 
+
         setBusy(true);
         $('v-hint').classList.add('hidden');
 
+
         const typing = addTyping();
+
 
         try {
           const data = audio
@@ -2011,14 +2533,18 @@
               viaPortuguese: !!viaPt
             });
 
+
           typing.remove();
+
 
           // A sessão terminou ou recomeçou entretanto: ignora esta resposta
           if (session !== state.sessionId) return;
 
+
           // Com áudio, a IA devolve também o que ouviu
           if (audio) {
             userText = String(data.transcript || '').trim();
+
 
             if (!userText) {
               if (userWrap) userWrap.remove();
@@ -2027,11 +2553,14 @@
               return;
             }
 
+
             const bubble = userWrap && userWrap.querySelector('.v-bubble');
             if (bubble) bubble.textContent = (data.translation ? '🇵🇹 ' : '') + userText;
           }
 
+
           let pause = false;
+
 
           if (!start) {
             state.history.push({
@@ -2039,6 +2568,7 @@
               text: userText,
               pt: !!viaPt || !!data.translation
             });
+
 
             if (data.translation) {
               state.learned.push(data.translation);
@@ -2049,25 +2579,31 @@
               });
               updateFixCount();
 
+
               pause = $('v-opt-pause').checked;
               if (userWrap) addTranslation(userWrap, data.translation, pause);
             } else if (data.correction && !sameSentence(userText, data.correction.better)) {
               state.fixes.push({
                 said: userText,
                 better: data.correction.better,
-                note: data.correction.note
+                note: data.correction.note,
+                natural: data.correction.natural || ''
               });
               updateFixCount();
+
 
               pause = $('v-opt-fix').checked && $('v-opt-pause').checked;
               if (userWrap) addFix(userWrap, data.correction, pause);
             }
           }
 
+
           state.history.push({ role: 'ai', text: data.reply });
           addBubble('ai', data.reply, false);
 
+
           setBusy(false);
+
 
           // Mostra a resposta por escrito e espera que leias a correção
           if (pause && state.visible) {
@@ -2075,23 +2611,31 @@
             state.sayTarget = $('v-opt-say').checked && target ? target : null;
             state.sayAttempts = 0;
 
+
             const skipped = await waitForContinue();
             if (skipped || session !== state.sessionId) return;
           }
 
+
           if (!state.visible) return;
+
 
           await speak(data.reply);
 
+
           if (session !== state.sessionId || !state.visible) return;
+
 
           if ($('v-opt-hands').checked && (SR || useAiListening()) && !state.busy) startListening(false);
         } catch (error) {
           typing.remove();
 
+
           if (session !== state.sessionId) return;
 
+
           setBusy(false);
+
 
           // Servidor com o Code.gs antigo: volta ao microfone do browser em vez de bloquear
           if (audio && error.outdated) {
@@ -2102,42 +2646,52 @@
             return;
           }
 
+
           addBubble('ai', '⚠ ' + error.message, false);
         }
       }
 
+
       function sendUser(text, viaPt) {
         let clean = String(text || '').trim();
         if (!clean || state.busy) return;
+
 
         if (clean.length > 600) {
           clean = clean.slice(0, 600);
           showToast('Long answer: only the first 600 characters were sent.');
         }
 
+
         // Se estavas a ler uma correção, avança sem a IA falar a resposta anterior
         releaseContinue(true);
+
 
         const wrap = addBubble('user', clean, viaPt);
         aiTurn(clean, false, wrap, viaPt);
       }
+
 
       function sendTyped() {
         const input = $('v-type');
         const text = input.value.trim();
         if (!text) return;
 
+
         stopListening();
         stopSpeaking();
         input.value = '';
+
 
         if (state.sayTarget) {
           handleSayItText(text);
           return;
         }
 
+
         sendUser(text, false);
       }
+
 
       function setBusy(value) {
         state.busy = value;
@@ -2146,14 +2700,18 @@
         updateMic();
       }
 
+
       /* ---- microfone ---- */
+
 
       function updateMic() {
         const mic = $('v-btn-mic');
         const label = $('v-mic-label');
 
+
         mic.classList.remove('listening', 'busy');
         $('v-btn-discard').classList.toggle('hidden', !(state.wantListening || state.rec));
+
 
         if (state.rec) {
           mic.classList.add('listening');
@@ -2184,16 +2742,20 @@
           label.textContent = SR ? 'Tap the microphone to speak' : 'Speech recognition unavailable: type below';
         }
 
+
         updatePronMic();
       }
+
 
       function collectDraft() {
         return (state.draft + (state.interim ? ' ' + state.interim : '')).trim();
       }
 
+
       function updateLive() {
         $('v-live').textContent = collectDraft();
       }
+
 
       function resetListening() {
         clearTimeout(state.autoTimer);
@@ -2208,8 +2770,10 @@
         updateMic();
       }
 
+
       function onMicTap() {
         if (state.starting) return;
+
 
         // Gravação em curso: tocar envia
         if (state.rec) {
@@ -2217,16 +2781,19 @@
           return;
         }
 
+
         if (!useAiListening() && !SR) {
           showToast('This browser has no speech recognition. Please type your answer.');
           return;
         }
+
 
         // Enquanto ouve, tocar no botão ENVIA o que disseste
         if (state.wantListening) {
           finishListening(true);
           return;
         }
+
 
         if (state.continueResolve) {
           // "Say it": abre o microfone para repetires a frase certa
@@ -2235,9 +2802,11 @@
             return;
           }
 
+
           releaseContinue(false);
           return;
         }
+
 
         // Se a IA ainda está a falar, pára-a e abre o microfone no mesmo toque
         if (state.speaking) {
@@ -2245,10 +2814,13 @@
           state.speaking = false;
         }
 
+
         if (state.busy) return;
+
 
         startListening(false);
       }
+
 
       function onPtTap() {
         if (!SR) {
@@ -2256,29 +2828,37 @@
           return;
         }
 
+
         if (state.wantListening || state.busy || state.continueResolve) return;
+
 
         if (state.speaking) {
           stopSpeaking();
           state.speaking = false;
         }
 
+
         startListening(true);
       }
 
+
       function startListening(pt) {
         if (state.wantListening || state.busy || state.rec || state.starting || (state.continueResolve && !state.sayTarget)) return;
+
 
         if (useAiListening()) {
           startRecording();
           return;
         }
 
+
         if (!SR) return;
+
 
         // Liberta o áudio da síntese de voz antes de abrir o microfone (importante no iPhone)
         if ('speechSynthesis' in window && (IOS || state.speaking)) window.speechSynthesis.cancel();
         state.speaking = false;
+
 
         state.draft = '';
         state.interim = '';
@@ -2286,38 +2866,48 @@
         state.ptMode = !!pt;
         state.wantListening = true;
 
+
         updateLive();
         updateMic();
         beginRecognition();
       }
 
+
       function scheduleAutoSend() {
         clearTimeout(state.autoTimer);
         if (!$('v-opt-auto').checked) return;
+
 
         state.autoTimer = setTimeout(() => {
           if (state.wantListening && collectDraft()) finishListening(true);
         }, 3500);
       }
 
+
       function beginRecognition() {
         const recognition = new SR();
+
 
         recognition.lang = state.ptMode ? 'pt-PT' : 'en-GB';
         recognition.interimResults = true;
         recognition.continuous = !IOS;
         recognition.maxAlternatives = 1;
 
+
         recognition.onresult = event => {
           if (state.recognition !== recognition) return;
 
+
           let interim = '';
+
 
           for (let i = event.resultIndex; i < event.results.length; i++) {
             const result = event.results[i];
             const text = result[0].transcript.trim();
 
+
             if (!text) continue;
+
 
             if (result.isFinal) {
               // Evita repetições que alguns browsers de telemóvel produzem
@@ -2329,18 +2919,22 @@
             }
           }
 
+
           clearTimeout(state.watchdog);
           state.interim = interim;
           updateLive();
           scheduleAutoSend();
         };
 
+
         recognition.onerror = event => {
           if (state.recognition !== recognition) return;
+
 
           const blocked = IOS
             ? 'Microphone or speech recognition blocked. In Safari tap aA › Website Settings and allow the microphone, and check Settings › General › Keyboard › Enable Dictation.'
             : 'Microphone blocked. Allow the microphone for this site in your browser settings.';
+
 
           const messages = {
             'not-allowed': blocked,
@@ -2348,6 +2942,7 @@
             'audio-capture': 'No microphone found.',
             'network': 'Speech recognition needs an internet connection.'
           };
+
 
           if (messages[event.error]) {
             showToast(messages[event.error]);
@@ -2362,22 +2957,27 @@
           }
         };
 
+
         recognition.onend = () => {
           if (state.recognition !== recognition) return;
+
 
           if (state.sendOnEnd) {
             completeListening();
             return;
           }
 
+
           // O browser termina sozinho depois de silêncio
           if (state.wantListening) {
             state.recognition = null;
+
 
             // iPhone: não deixa reiniciar sem um toque. O texto passa para a caixa de escrita
             if (IOS) {
               const captured = collectDraft();
               resetListening();
+
 
               if (captured) {
                 putInInput(captured);
@@ -2388,7 +2988,9 @@
               return;
             }
 
+
             // Computador: volta a ouvir
+
 
             setTimeout(() => {
               if (state.wantListening && !state.recognition) beginRecognition();
@@ -2396,12 +2998,15 @@
             return;
           }
 
+
           resetListening();
         };
+
 
         try {
           state.recognition = recognition;
           recognition.start();
+
 
           // iPhone: se nada chegar em 10 segundos, desbloqueia em vez de ficar à espera
           if (IOS) {
@@ -2421,17 +3026,21 @@
         }
       }
 
+
       function putInInput(text) {
         const input = $('v-type');
         input.value = ((input.value ? input.value.trim() + ' ' : '') + text).slice(0, 500);
       }
+
 
       function completeListening() {
         const send = state.sendOnEnd;
         const pt = state.ptMode;
         const text = collectDraft();
 
+
         resetListening();
+
 
         if (send && text) {
           if (state.pronTarget) handlePronText(text);
@@ -2442,21 +3051,26 @@
         }
       }
 
+
       // send = true envia o que foi dito; false descarta
       function finishListening(send) {
         clearTimeout(state.autoTimer);
+
 
         if (!send) {
           stopListening();
           return;
         }
 
+
         state.wantListening = false;
         state.sendOnEnd = true;
         updateMic();
 
+
         if (state.recognition) {
           try { state.recognition.stop(); } catch (error) { /* ignore */ }
+
 
           // Segurança: se o browser nunca terminar, envia na mesma
           setTimeout(() => {
@@ -2467,13 +3081,16 @@
         }
       }
 
+
       // Para de ouvir e descarta o que foi dito
       function stopListening() {
         if (state.rec) cancelRecording();
         clearTimeout(state.autoTimer);
 
+
         const recognition = state.recognition;
         resetListening();
+
 
         if (recognition) {
           try { recognition.abort(); } catch (error) { /* ignore */ }
@@ -2481,11 +3098,15 @@
       }
 
 
+
+
       /* ---- gravação de áudio: a IA transcreve (sem limites de silêncio) ---- */
+
 
       // Avisa no topo do ecrã e por cima dos botões (em baixo o Safari esconde os avisos)
       function notify(text) {
         showToast(text);
+
 
         const live = $('v-live');
         const line = '⚠ ' + text;
@@ -2493,34 +3114,42 @@
         setTimeout(() => { if (live.textContent === line) live.textContent = ''; }, 9000);
       }
 
+
       function supportsRecording() {
         return !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia &&
           (window.AudioContext || window.webkitAudioContext));
       }
 
+
       function useAiListening() {
         return $('v-opt-ai').checked && supportsRecording();
       }
+
 
       function applyEngine() {
         // Com a IA a ouvir, o português é detetado sozinho: o botão PT não faz falta
         $('v-btn-pt').style.display = 'none';
       }
 
+
       async function startRecording() {
         if (state.rec || state.starting) return;
         state.starting = true;
 
+
         // Liberta o áudio da síntese de voz (importante no iPhone)
         if ('speechSynthesis' in window) window.speechSynthesis.cancel();
         state.speaking = false;
+
 
         // iPhone: o áudio só arranca se o AudioContext nascer DENTRO do toque,
         // antes de qualquer espera (por isso é criado antes de pedir o microfone)
         const AudioCtx = window.AudioContext || window.webkitAudioContext;
         const ctx = new AudioCtx();
 
+
         try { ctx.resume(); } catch (error) { /* ignore */ }
+
 
         try {
           const unlock = ctx.createBufferSource();
@@ -2529,7 +3158,9 @@
           unlock.start(0);
         } catch (error) { /* ignore */ }
 
+
         let stream;
+
 
         try {
           stream = await navigator.mediaDevices.getUserMedia({
@@ -2545,16 +3176,20 @@
           return;
         }
 
+
         try { await ctx.resume(); } catch (error) { /* ignore */ }
+
 
         const source = ctx.createMediaStreamSource(stream);
         const processor = ctx.createScriptProcessor(4096, 1, 1);
         const mute = ctx.createGain();
         mute.gain.value = 0;
 
+
         // Cópia de segurança: o MediaRecorder grava por um caminho independente
         let mr = null;
         const mrChunks = [];
+
 
         if (window.MediaRecorder) {
           try {
@@ -2566,11 +3201,14 @@
           }
         }
 
+
         const rec = { stream, ctx, source, processor, mute, chunks: [], rate: ctx.sampleRate, started: Date.now(), level: 0, maxLevel: 0, mr, mrChunks };
+
 
         processor.onaudioprocess = event => {
           const data = event.inputBuffer.getChannelData(0);
           rec.chunks.push(new Float32Array(data));
+
 
           let sum = 0;
           for (let i = 0; i < data.length; i += 16) sum += data[i] * data[i];
@@ -2578,9 +3216,11 @@
           rec.maxLevel = Math.max(rec.maxLevel, rec.level);
         };
 
+
         source.connect(processor);
         processor.connect(mute);
         mute.connect(ctx.destination);
+
 
         state.rec = rec;
         state.starting = false;
@@ -2589,19 +3229,23 @@
         updateMic();
         showMeter(true);
 
+
         state.recTimer = setInterval(() => {
           const seconds = Math.floor((Date.now() - rec.started) / 1000);
           $('v-meter-time').textContent = formatTime(seconds);
           $('v-meter-fill').style.width = Math.min(100, Math.round(rec.level * 400)) + '%';
 
+
           if (seconds >= 3 && rec.maxLevel < 0.003) {
             $('v-live').textContent = '⚠ No sound from the microphone yet. Is it muted or used by another app?';
           }
+
 
           // Segurança: 2 minutos por gravação
           if (seconds >= 120) finishRecording(true);
         }, 150);
       }
+
 
       function showMeter(on) {
         $('v-meter').classList.toggle('hidden', !on);
@@ -2611,9 +3255,11 @@
         }
       }
 
+
       async function closeRecording(rec) {
         clearInterval(state.recTimer);
         showMeter(false);
+
 
         try { if (rec.mr && rec.mr.state !== 'inactive') rec.mr.stop(); } catch (error) { /* ignore */ }
         try { rec.processor.disconnect(); rec.source.disconnect(); rec.mute.disconnect(); } catch (error) { /* ignore */ }
@@ -2621,24 +3267,30 @@
         try { await rec.ctx.close(); } catch (error) { /* ignore */ }
       }
 
+
       function cancelRecording() {
         const rec = state.rec;
         if (!rec) return;
+
 
         state.rec = null;
         closeRecording(rec);
         updateMic();
       }
 
+
       async function finishRecording(send) {
         const rec = state.rec;
         if (!rec) return;
 
+
         state.rec = null;
         updateMic();
 
+
         // Cópia de segurança: o que o MediaRecorder gravou
         let backup = null;
+
 
         if (send && rec.mr && rec.mr.state !== 'inactive') {
           backup = await new Promise(resolve => {
@@ -2646,15 +3298,19 @@
               ? new Blob(rec.mrChunks, { type: rec.mr.mimeType || 'audio/mp4' })
               : null);
 
+
             try { rec.mr.stop(); } catch (error) { resolve(null); }
           });
         }
 
+
         const seconds = (Date.now() - rec.started) / 1000;
         let audio = null;
 
+
         if (send && seconds >= 0.7) {
           audio = encodeWav(rec.chunks, rec.rate);
+
 
           // Se o caminho principal não apanhou som, usa a cópia de segurança
           if (!audio && backup && backup.size > 800) {
@@ -2665,6 +3321,7 @@
                   .catch(reject);
               });
 
+
               audio = encodeWav([decoded.getChannelData(0)], decoded.sampleRate);
             } catch (error) {
               audio = null;
@@ -2672,24 +3329,30 @@
           }
         }
 
+
         await closeRecording(rec);
 
+
         if (!send) return;
+
 
         if (seconds < 0.7) {
           notify('Too short. Tap 🎙 and speak.');
           return;
         }
 
+
         if (!audio) {
           notify('No sound was captured (' + seconds.toFixed(1) + ' s). Check that the microphone is not muted or used by another app, then try again.');
           return;
         }
 
+
         if (state.pronTarget) handlePronAudio(audio);
         else if (state.sayTarget) handleSayItAudio(audio);
         else sendAudio(audio);
       }
+
 
       // Converte a gravação em WAV mono de 16 kHz (pequeno e aceite pela IA)
       function encodeWav(chunks, inputRate) {
@@ -2697,19 +3360,23 @@
         chunks.forEach(chunk => { length += chunk.length; });
         if (!length) return null;
 
+
         const merged = new Float32Array(length);
         let offset = 0;
         chunks.forEach(chunk => { merged.set(chunk, offset); offset += chunk.length; });
+
 
         let peak = 0;
         for (let i = 0; i < merged.length; i += 8) peak = Math.max(peak, Math.abs(merged[i]));
         if (peak < 0.004) return null;
         const gain = peak < 0.5 ? Math.min(20, 0.9 / peak) : 1;
 
+
         const targetRate = 16000;
         const ratio = inputRate / targetRate;
         const outLength = Math.floor(merged.length / ratio);
         const pcm = new Int16Array(outLength);
+
 
         for (let i = 0; i < outLength; i++) {
           const start = Math.floor(i * ratio);
@@ -2720,9 +3387,11 @@
           pcm[i] = value < 0 ? value * 0x8000 : value * 0x7FFF;
         }
 
+
         const buffer = new ArrayBuffer(44 + pcm.length * 2);
         const view = new DataView(buffer);
         const write = (pos, text) => { for (let i = 0; i < text.length; i++) view.setUint8(pos + i, text.charCodeAt(i)); };
+
 
         write(0, 'RIFF');
         view.setUint32(4, 36 + pcm.length * 2, true);
@@ -2739,47 +3408,68 @@
         view.setUint32(40, pcm.length * 2, true);
         for (let i = 0; i < pcm.length; i++) view.setInt16(44 + i * 2, pcm[i], true);
 
+
         const bytes = new Uint8Array(buffer);
         let binary = '';
         for (let i = 0; i < bytes.length; i += 0x8000) {
           binary += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
         }
 
+
         return { mime: 'audio/wav', data: btoa(binary) };
       }
+
 
       function sendAudio(audio) {
         if (state.busy) return;
 
+
         releaseContinue(true);
+
 
         const wrap = addBubble('user', '🎙 …', false);
         aiTurn('', false, wrap, false, audio);
       }
 
+
       /* ---- "Say it": repetir em voz alta a frase certa ---- */
+
 
       function words(text) {
         return String(text || '').toLowerCase().replace(/[’‘]/g, "'").replace(/[^a-z0-9' ]+/g, ' ').split(/\s+/).filter(Boolean);
       }
+
 
       function similarity10(said, target) {
         const a = words(said);
         const b = words(target);
         if (!b.length) return 0;
 
+
         const set = new Set(a);
         let hit = 0;
         b.forEach(word => { if (set.has(word)) hit++; });
 
+
         return Math.round(hit / Math.max(a.length, b.length) * 10);
       }
+
+
+      // Palavras que a IA sugere treinar (estimativa a partir do áudio)
+      function wordTips(result) {
+        const list = (result && Array.isArray(result.words)) ? result.words : [];
+        if (!list.length) return '';
+        return ' · Practise: ' + list.map(w => w.word + (w.tip ? ' (' + w.tip + ')' : '')).join('; ') + '.';
+      }
+
 
       function showSayResult(html, ok) {
         const box = state.sayBox;
         if (!box) return;
 
+
         let area = box.querySelector('.v-say-result');
+
 
         if (!area) {
           area = document.createElement('div');
@@ -2787,23 +3477,29 @@
           box.appendChild(area);
         }
 
+
         area.className = 'v-say-result ' + (ok === true ? 'ok' : ok === false ? 'bad' : '');
         area.textContent = html;
         scrollLog();
       }
 
+
       function handleSayItText(text) {
         evaluateSayIt({ transcript: text, match: similarity10(text, state.sayTarget), feedback: '' });
       }
+
 
       async function handleSayItAudio(audio) {
         const target = state.sayTarget;
         const session = state.sessionId;
 
+
         showSayResult('Checking...', null);
+
 
         try {
           const result = await apiPost('voiceSayIt', { audio: audio.data, mime: audio.mime, target });
+
 
           if (session !== state.sessionId || state.sayTarget !== target) return;
           evaluateSayIt(result);
@@ -2812,11 +3508,14 @@
         }
       }
 
+
       function evaluateSayIt(result) {
         state.sayAttempts++;
 
+
         const passed = result.match >= 7;
         const heard = result.transcript ? 'I heard: “' + result.transcript + '”. ' : '';
+
 
         if (passed) {
           showSayResult('✓ Well said! ' + (result.feedback || ''), true);
@@ -2824,29 +3523,36 @@
           return;
         }
 
+
         if (state.sayAttempts >= 3) {
-          showSayResult(heard + (result.feedback || '') + ' Let’s move on.', false);
+          showSayResult(heard + (result.feedback || '') + wordTips(result) + ' Let’s move on.', false);
           setTimeout(() => releaseContinue(false), 1800);
           return;
         }
 
-        showSayResult(heard + (result.feedback || 'Almost.') + ' Tap 🎙 to try again.', false);
+
+        showSayResult(heard + (result.feedback || 'Almost.') + wordTips(result) + ' Tap 🎙 to try again.', false);
       }
 
+
       /* ---- voz do assistente ---- */
+
 
       function refreshVoices() {
         fillVoiceSelect($('v-voice-select'), lsGet('ed-voice-name'));
       }
 
+
       // Em iOS/Safari a primeira síntese tem de nascer de um toque do utilizador
       function unlockSpeech() {
         if (!('speechSynthesis' in window)) return;
+
 
         try {
           window.speechSynthesis.speak(new SpeechSynthesisUtterance(''));
         } catch (e) { /* ignore */ }
       }
+
 
       function speak(text, rate) {
         return new Promise(resolve => {
@@ -2855,8 +3561,10 @@
             return;
           }
 
+
           stopListening();
           window.speechSynthesis.cancel();
+
 
           const utterance = new SpeechSynthesisUtterance(String(text));
           const choice = chooseVoice($('v-voice-select').value || lsGet('ed-voice-name'));
@@ -2865,9 +3573,11 @@
           utterance.pitch = choice.pitch;
           if (choice.voice) utterance.voice = choice.voice;
 
+
           let finished = false;
           let guard;
           let poll;
+
 
           const done = () => {
             if (finished) return;
@@ -2879,8 +3589,10 @@
             resolve();
           };
 
+
           utterance.onend = done;
           utterance.onerror = done;
+
 
           // Segurança caso o browser nunca dispare onend
           guard = setTimeout(() => {
@@ -2888,9 +3600,11 @@
             done();
           }, String(text).length * 140 + 6000);
 
+
           state.speaking = true;
           updateMic();
           window.speechSynthesis.speak(utterance);
+
 
           // No iPhone o onend nem sempre dispara: verifica também se a voz já parou
           const startedAt = Date.now();
@@ -2900,21 +3614,27 @@
         });
       }
 
+
       function stopSpeaking() {
         if ('speechSynthesis' in window) window.speechSynthesis.cancel();
       }
 
+
       /* ---- ajuda ---- */
+
 
       async function showHint() {
         if (state.busy) return;
 
+
         stopListening();
         stopSpeaking();
+
 
         const box = $('v-hint');
         box.classList.remove('hidden');
         box.textContent = 'Thinking of ideas...';
+
 
         try {
           const data = await apiPost('voiceHint', {
@@ -2922,14 +3642,18 @@
             history: state.history.slice()
           });
 
+
           box.innerHTML = '';
+
 
           (data.suggestions || []).forEach(suggestion => {
             const line = document.createElement('div');
             line.className = 'v-hint-line';
 
+
             const span = document.createElement('span');
             span.textContent = '“' + suggestion + '”';
+
 
             const button = document.createElement('button');
             button.className = 'button secondary small';
@@ -2937,10 +3661,12 @@
             button.setAttribute('aria-label', 'Listen');
             button.addEventListener('click', () => speak(suggestion));
 
+
             line.appendChild(span);
             line.appendChild(button);
             box.appendChild(line);
           });
+
 
           if (!box.children.length) box.textContent = 'No ideas this time. Try again.';
         } catch (error) {
@@ -2949,9 +3675,13 @@
       }
 
 
+
+
       /* ---- pronúncia: repetir frases e a IA compara ---- */
 
+
       const FILLERS = ['so', 'well', 'and', 'but', 'okay', 'ok', 'then', 'um', 'uh', 'like', 'right', 'now'];
+
 
       function sameSentence(a, b) {
         const clean = text => {
@@ -2960,9 +3690,11 @@
           return list.join(' ');
         };
 
+
         const x = clean(a);
         return !!x && x === clean(b);
       }
+
 
       const PRON = [
         ['Thank you for the thorough report.', 'th: põe a língua entre os dentes (thank, thorough). Não é "t" nem "f".'],
@@ -2999,17 +3731,70 @@
         ['She sells seashells by the seashore.', 'Trava-línguas: s vs sh (sells, seashells). Devagar primeiro.']
       ];
 
+
       const pron = { items: [], index: 0, attempts: 0, passed: 0 };
       const shuffleLocal = list => list.slice().sort(() => Math.random() - 0.5);
+
+
+      // O que a IA guardou sobre ti (podes apagar notas ou tudo)
+      async function renderMemory() {
+        const box = $('v-memory');
+        if (!box) return;
+
+        let data = null;
+
+        try {
+          data = await ensureAppData();
+        } catch (error) {
+          box.innerHTML = '';
+          return;
+        }
+
+        const notes = (data && data.memory) || [];
+
+        if (!notes.length) {
+          box.innerHTML = '<p class="hint" style="margin-top:14px">A IA vai lembrar-se de coisas úteis sobre ti (o teu trabalho, planos e os erros que repetes) para tornar cada conversa mais pessoal.</p>';
+          return;
+        }
+
+        box.innerHTML = '<div class="v-section">What the AI remembers about you</div>' +
+          notes.map((n, i) => '<div class="mem-row"><span>' + escapeHtml(n.t) + '</span><button class="v-link" data-forget="' + i + '" title="Forget this" aria-label="Forget">✕</button></div>').join('') +
+          '<button class="button secondary small" id="v-mem-clear" style="margin-top:10px">Forget everything</button>';
+
+        box.querySelectorAll('[data-forget]').forEach(button => {
+          button.addEventListener('click', async () => {
+            try {
+              const result = await runServer('forgetMemoryNote', [Number(button.dataset.forget)]);
+              data.memory = result.memory || [];
+              renderMemory();
+            } catch (error) {
+              showToast(error.message);
+            }
+          });
+        });
+
+        $('v-mem-clear').addEventListener('click', async () => {
+          try {
+            await runServer('clearVoiceMemory', []);
+            data.memory = [];
+            renderMemory();
+          } catch (error) {
+            showToast(error.message);
+          }
+        });
+      }
+
 
       function setMode(mode) {
         $('v-tab-talk').classList.toggle('active', mode === 'talk');
         $('v-tab-pron').classList.toggle('active', mode === 'pron');
 
+
         if (state.rec) cancelRecording();
         stopListening();
         stopSpeaking();
         state.pronTarget = null;
+
 
         if (mode === 'pron') {
           renderPronHome();
@@ -3019,11 +3804,44 @@
         }
       }
 
+
+      // Frases tuas: erros que repetes, exemplos das palavras em atraso e expressões da voz
+      async function personalPronItems() {
+        const data = await ensureAppData();
+        const seen = {};
+        const out = [];
+
+        const add = (english, hint) => {
+          const text = String(english || '').trim();
+          const key = text.toLowerCase();
+          if (text.split(/\s+/).length < 3 || text.length > 140 || seen[key]) return;
+          seen[key] = true;
+          out.push([text, hint || '']);
+        };
+
+        (data.mistakes || []).slice()
+          .sort((a, b) => (b.times || 1) - (a.times || 1))
+          .forEach(m => add(m.better, m.note || 'Corrige este erro em voz alta'));
+
+        (data.dueReviews || []).forEach(r => add(r.example, r.meaning));
+
+        (data.allReview || [])
+          .filter(r => r.source === 'voice' || r.tag === 'Natural')
+          .slice(-12).reverse()
+          .forEach(r => add(r.phrase, r.meaning));
+
+        return out.slice(0, 6);
+      }
+
+
       function renderPronHome() {
         $('v-pron').innerHTML =
           '<h4 class="content-title">Pronunciation practice</h4>' +
-          '<p class="hint">Ouves a frase, repetes em voz alta e a IA compara com o texto e diz-te o que corrigir. São 6 frases, com 3 tentativas em cada.</p>' +
-          '<button class="button" id="v-pron-start">Start (6 sentences)</button>';
+          '<p class="hint">Ouves a frase, repetes em voz alta e a IA compara com o texto, diz-te o que corrigir e sugere palavras a treinar (é uma estimativa a partir do áudio, não uma avaliação fonética). São 6 frases, com 3 tentativas em cada.</p>' +
+          '<div class="conversation-actions" style="margin-top:6px">' +
+          '<button class="button" id="v-pron-start">General set (6 sentences)</button>' +
+          '<button class="button secondary" id="v-pron-mine">My sentences</button></div>' +
+          '<p class="hint" id="v-pron-note" style="margin-top:10px"></p>';
 
         $('v-pron-start').addEventListener('click', () => {
           pron.items = shuffleLocal(PRON).slice(0, 6);
@@ -3032,12 +3850,36 @@
           unlockSpeech();
           renderPron();
         });
+
+        $('v-pron-mine').addEventListener('click', async () => {
+          const note = $('v-pron-note');
+          note.textContent = 'A preparar as tuas frases...';
+
+          try {
+            const items = await personalPronItems();
+
+            if (items.length < 3) {
+              note.textContent = 'Ainda tens poucas frases tuas (erros e expressões). Faz mais conversas ou usa o conjunto geral.';
+              return;
+            }
+
+            pron.items = items;
+            pron.index = 0;
+            pron.passed = 0;
+            unlockSpeech();
+            renderPron();
+          } catch (error) {
+            note.textContent = 'Não foi possível preparar as frases: ' + error.message;
+          }
+        });
       }
+
 
       function renderPron() {
         const item = pron.items[pron.index];
         pron.attempts = 0;
         state.pronTarget = null;
+
 
         $('v-pron').innerHTML =
           '<div class="progress-row"><span>Sentence ' + (pron.index + 1) + ' / ' + pron.items.length + '</span><span class="tag">Pronunciation</span></div>' +
@@ -3052,6 +3894,7 @@
           '<div class="conversation-actions"><button class="button success" id="v-pron-next" style="display:none">Next</button>' +
           '<button class="button secondary" id="v-pron-quit">Quit</button></div>';
 
+
         $('v-pron-listen').addEventListener('click', () => speak(item[0]));
         $('v-pron-slow').addEventListener('click', () => speak(item[0], 0.6));
         $('v-pron-quit').addEventListener('click', () => { stopListening(); state.pronTarget = null; renderPronHome(); });
@@ -3060,35 +3903,43 @@
           else { pron.index++; renderPron(); }
         });
 
+
         $('v-pron-mic').addEventListener('click', () => {
           if (state.rec) { finishRecording(true); return; }
           if (state.wantListening) { finishListening(true); return; }
           if (state.starting) return;
+
 
           state.pronTarget = item[0];
           showPron('Listening... say the sentence, then tap Send.', null);
           startListening(false);
         });
 
+
         setTimeout(() => speak(item[0]), 300);
       }
+
 
       function updatePronMic() {
         const button = $('v-pron-mic');
         if (button) button.textContent = (state.rec || state.wantListening) ? '➤ Send' : '🎙 Record';
       }
 
+
       function showPron(text, ok) {
         const box = $('v-pron-result');
         if (!box) return;
+
 
         box.className = 'feedback show' + (ok === true ? ' good' : ok === false ? ' bad' : '');
         box.textContent = text;
       }
 
+
       async function handlePronAudio(audio) {
         const target = state.pronTarget;
         showPron('Checking...', null);
+
 
         try {
           const result = await apiPost('voiceSayIt', { audio: audio.data, mime: audio.mime, target });
@@ -3098,15 +3949,19 @@
         }
       }
 
+
       function handlePronText(text) {
         evaluatePron({ transcript: text, match: similarity10(text, state.pronTarget), feedback: '' });
       }
 
+
       function evaluatePron(result) {
         pron.attempts++;
 
+
         const passed = result.match >= 7;
         const heard = result.transcript ? 'I heard: “' + result.transcript + '”. ' : '';
+
 
         if (passed) {
           pron.passed++;
@@ -3116,20 +3971,25 @@
           return;
         }
 
+
         if (pron.attempts >= 3) {
           state.pronTarget = null;
-          showPron(heard + (result.feedback || '') + ' Let’s move on.', false);
+          showPron(heard + (result.feedback || '') + wordTips(result) + ' Let’s move on.', false);
           $('v-pron-next').style.display = 'inline-flex';
           return;
         }
 
-        showPron(heard + (result.feedback || 'Almost.') + ' Try again (' + pron.attempts + '/3).', false);
+
+        showPron(heard + (result.feedback || 'Almost.') + wordTips(result) + ' Try again (' + pron.attempts + '/3).', false);
       }
+
 
       function finishPron() {
         state.pronTarget = null;
 
+
         apiPost('savePractice', { summary: { label: 'Pronunciation', correct: pron.passed, total: pron.items.length } }).catch(() => {});
+
 
         $('v-pron').innerHTML =
           '<p class="eyebrow">Result</p>' +
@@ -3137,10 +3997,13 @@
           '<p class="hint">Repete as que falharam amanhã: a pronúncia melhora com repetição curta e frequente.</p>' +
           '<div class="conversation-actions"><button class="button" id="v-pron-again">New set</button></div>';
 
+
         $('v-pron-again').addEventListener('click', renderPronHome);
       }
 
+
       /* ---- fim e nível ---- */
+
 
       function levelLabel(score) {
         if (score <= 2) return 'Beginner';
@@ -3149,6 +4012,7 @@
         if (score <= 8) return 'Upper-intermediate';
         return 'Advanced';
       }
+
 
       async function finishSession() {
         stopListening();
@@ -3159,7 +4023,9 @@
         clearInterval(state.timer);
         setBusy(false);
 
+
         const userTurns = state.history.filter(h => h.role === 'user').length;
+
 
         if (userTurns < 2) {
           showToast('Say at least two things to get your level.');
@@ -3167,15 +4033,18 @@
           return;
         }
 
+
         state.inChat = false;
         showPanel('v-summary');
         await requestSummary();
       }
 
+
       // Pode repetir-se: a conversa fica guardada e o servidor não duplica o resultado
       async function requestSummary() {
         const summary = $('v-summary');
         summary.innerHTML = '<h4 class="content-title">Preparing your level...</h4><p class="hint">This takes a few seconds. Your conversation is safe.</p>';
+
 
         try {
           // O tempo de estudo já é contado pela app, por isso seconds = 0
@@ -3188,23 +4057,28 @@
             sessionKey: state.sessionKey
           });
 
+
           renderSummary(data);
           refreshAppData().catch(() => {});
         } catch (error) {
           summary.innerHTML = '';
 
+
           const title = document.createElement('h4');
           title.className = 'content-title';
           title.textContent = 'Could not get your level';
+
 
           const note = document.createElement('div');
           note.className = 'error-box';
           note.textContent = error.message + ' Your conversation is safe: you can try again.';
 
+
           const retry = document.createElement('button');
           retry.className = 'button full';
           retry.textContent = '↻ Try again';
           retry.addEventListener('click', requestSummary);
+
 
           const button = document.createElement('button');
           button.className = 'button secondary full';
@@ -3212,15 +4086,18 @@
           button.textContent = 'New conversation';
           button.addEventListener('click', () => showPanel('v-start'));
 
+
           const back = document.createElement('button');
           back.className = 'button secondary full';
           back.style.marginTop = '10px';
           back.textContent = '← Back to the app';
           back.addEventListener('click', backToApp);
 
+
           summary.append(title, note, retry, button, back);
         }
       }
+
 
       function sectionLabel(text) {
         const el = document.createElement('div');
@@ -3229,26 +4106,33 @@
         return el;
       }
 
+
       function renderSummary(data) {
         const summary = $('v-summary');
         const scores = data.scores || { overall: data.score || 0, grammar: 0, vocabulary: 0, fluency: 0 };
 
+
         summary.innerHTML = '';
+
 
         const eyebrow = document.createElement('p');
         eyebrow.className = 'eyebrow';
         eyebrow.textContent = 'Your level in this conversation · ' + formatTime(state.seconds);
 
+
         const score = document.createElement('div');
         score.className = 'v-score';
         score.innerHTML = escapeHtml(String(scores.overall)) + ' <small>/ 10</small>';
+
 
         const level = document.createElement('p');
         level.className = 'v-level';
         level.textContent = levelLabel(scores.overall);
 
+
         const subs = document.createElement('div');
         subs.className = 'v-subs';
+
 
         [['Grammar', scores.grammar], ['Vocabulary', scores.vocabulary], ['Fluency', scores.fluency]].forEach(pair => {
           const box = document.createElement('div');
@@ -3257,38 +4141,82 @@
           subs.appendChild(box);
         });
 
+
         const text = document.createElement('p');
         text.style.margin = '14px 0 0';
         text.textContent = data.summary;
+
 
         const note = document.createElement('p');
         note.className = 'hint';
         note.style.margin = '10px 0 0';
         note.textContent = 'Estimate based on what the microphone transcribed. Pronunciation is not assessed, and a short conversation gives a rough result.';
 
+
         summary.append(eyebrow, score, level, subs, text, note);
+
+        if (data.trend && data.trend.delta !== null && data.trend.delta !== undefined) {
+          const trend = document.createElement('p');
+          trend.className = 'v-trend';
+          const d = data.trend.delta;
+          trend.textContent = (d > 0 ? '▲ +' + d : d < 0 ? '▼ ' + d : '＝ same') +
+            ' compared with your last conversations (average ' + data.trend.prevAvg + ')';
+          subs.after(trend);
+        }
+
+        if (data.highlights && data.highlights.length) {
+          summary.appendChild(sectionLabel('What went well'));
+
+          data.highlights.forEach(h => {
+            const line = document.createElement('div');
+            line.className = 'v-hl';
+            line.textContent = '✓ ' + h;
+            summary.appendChild(line);
+          });
+        }
+
+        if (data.nextFocus) {
+          const next = document.createElement('div');
+          next.className = 'v-next';
+          next.textContent = '🎯 Next time: ' + data.nextFocus;
+          summary.appendChild(next);
+        }
+
 
         if (state.fixes.length) {
           summary.appendChild(sectionLabel('Corrections and new words from this conversation'));
           state.fixes.forEach(item => summary.appendChild(buildFixItem(item)));
         }
 
+
         if (data.mistakes && data.mistakes.length) {
           summary.appendChild(sectionLabel('What to improve'));
+
 
           data.mistakes.forEach(m => {
             const box = document.createElement('div');
             box.className = 'mistake';
 
+
             const from = document.createElement('span');
             from.className = 'from';
             from.textContent = m.original;
+
 
             const to = document.createElement('span');
             to.className = 'to';
             to.textContent = m.fix;
 
+
             box.append(from, document.createTextNode(' → '), to);
+
+            if (m.times >= 1) {
+              const rep = document.createElement('span');
+              rep.className = 'v-rep';
+              rep.textContent = '↻ repeated · ' + (m.times + 1) + 'x';
+              box.appendChild(rep);
+            }
+
 
             if (m.why) {
               const why = document.createElement('span');
@@ -3297,35 +4225,45 @@
               box.appendChild(why);
             }
 
+
             summary.appendChild(box);
           });
         }
 
+
         if (data.phrases && data.phrases.length) {
           summary.appendChild(sectionLabel('Useful expressions'));
+
 
           data.phrases.forEach(p => {
             const box = document.createElement('div');
             box.className = 'v-phrase';
 
+
             const head = document.createElement('div');
             head.className = 'head';
 
+
             const name = document.createElement('span');
             name.textContent = p.phrase;
+
 
             const listen = document.createElement('button');
             listen.className = 'button secondary small';
             listen.textContent = '🔊';
             listen.addEventListener('click', () => speak(p.phrase));
 
+
             head.append(name, listen);
+
 
             const meaning = document.createElement('span');
             meaning.className = 'meaning';
             meaning.textContent = p.meaning;
 
+
             box.append(head, meaning);
+
 
             if (p.example) {
               const example = document.createElement('span');
@@ -3334,8 +4272,56 @@
               box.appendChild(example);
             }
 
+
             summary.appendChild(box);
           });
+        }
+
+
+        if (data.natural && data.natural.length) {
+          summary.appendChild(sectionLabel('Say it more naturally'));
+
+          data.natural.forEach(n => {
+            const box = document.createElement('div');
+            box.className = 'v-phrase';
+
+            const head = document.createElement('div');
+            head.className = 'head';
+
+            const name = document.createElement('span');
+            name.textContent = n.native;
+
+            const listen = document.createElement('button');
+            listen.className = 'button secondary small';
+            listen.textContent = '🔊';
+            listen.addEventListener('click', () => speak(n.native));
+
+            head.append(name, listen);
+
+            const before = document.createElement('span');
+            before.className = 'example';
+            before.textContent = 'You said: ' + n.said;
+
+            box.append(head, before);
+
+            if (n.pt) {
+              const meaning = document.createElement('span');
+              meaning.className = 'meaning';
+              meaning.textContent = n.pt;
+              box.appendChild(meaning);
+            }
+
+            summary.appendChild(box);
+          });
+        }
+
+        if (data.memoryAdded) {
+          const mem = document.createElement('div');
+          mem.className = 'feedback show good';
+          mem.style.marginTop = '14px';
+          mem.textContent = 'I will remember ' + data.memoryAdded + ' new thing' +
+            (data.memoryAdded === 1 ? '' : 's') + ' about you for next time. You can review or delete them on the start screen.';
+          summary.appendChild(mem);
         }
 
         if (data.phrasesAdded) {
@@ -3347,12 +4333,14 @@
           summary.appendChild(added);
         }
 
+
         const again = document.createElement('button');
         again.className = 'button full';
         again.style.marginTop = '16px';
         again.textContent = 'New conversation';
         again.addEventListener('click', () => showPanel('v-start'));
         summary.appendChild(again);
+
 
         const back = document.createElement('button');
         back.className = 'button secondary full';
@@ -3362,8 +4350,11 @@
         summary.appendChild(back);
       }
 
+
       return { init, enter, leave };
     })();
+
+
 
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -3371,6 +4362,7 @@
       setupConnect();
       Voice.init();
       Voice.enter();
+      checkServerVersion();
     });
   </script>
 </body>
